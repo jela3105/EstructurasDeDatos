@@ -7,7 +7,9 @@ using namespace std;
 int main() {
 
   int datos[20] = {0};
-  int opcion, n, i, suma, maximo, minimo, subinidice, dato_buscar, encontrado;
+  int opcion, n, suma, maximo, minimo, subinidice, dato_buscar, encontrado,
+      valor, longitud_arreglo = 0;
+  float promedio;
   srand(time(NULL));
 
   while (true) {
@@ -20,6 +22,9 @@ int main() {
     cout << "4.  Maximo\n";
     cout << "5.  Minimo\n";
     cout << "6.  Busqueda\n";
+    cout << "7.  Pomedio\n";
+    cout << "8.  Mayores al promedio\n";
+    cout << "9.  Inicializacion con N\n";
     /*
     cout << "6.  Busqueda\n"
     */
@@ -38,6 +43,8 @@ int main() {
     case 1:
       cout << "    Cuantos datos deseas ingresar?: ";
       cin >> n;
+      if (n > longitud_arreglo)
+        longitud_arreglo = n;
       if (n <= 20) {
         for (int i = 0; i < n; i++) {
           cout << "    Ingresa el alor de datos[" << i << "]: ";
@@ -51,6 +58,8 @@ int main() {
     case 2:
       cout << "    Cuantos datos aleatoreos desea?: ";
       cin >> n;
+      if (n > longitud_arreglo)
+        longitud_arreglo = n;
       if (n <= 20) {
         for (int i = 0; i < n; i++) {
           datos[i] = 1 + rand() % 100;
@@ -108,6 +117,43 @@ int main() {
              << " en el subinidice " << subinidice << endl;
       else
         cout << "    El dato " << dato_buscar << " no fue encontrado" << endl;
+      break;
+
+    case 7:
+      suma = 0;
+      for (int i = 0; i < longitud_arreglo; i++) {
+        suma += datos[i];
+      }
+      promedio = (float)suma / longitud_arreglo;
+      cout << "\n    El promedio es: " << promedio << endl;
+      break;
+
+    case 8:
+      suma = 0;
+      for (int i = 0; i < longitud_arreglo; i++) {
+        suma += datos[i];
+      }
+      promedio = (float)suma / longitud_arreglo;
+
+      cout << "\n    Los valores mayores al promedio son: " << endl;
+      cout << "    Posicion		Valor " << endl;
+      for (int i = 0; i < longitud_arreglo; i++) {
+        if (datos[i] > promedio) {
+          cout << "    " << i << "\t\t\t" << datos[i] << endl;
+        }
+      }
+      break;
+
+    case 9:
+      cout << "\n    Cuantos datos deseas ingresar?: ";
+      cin >> n;
+      if (n > longitud_arreglo)
+        longitud_arreglo = n;
+      cout << "\n    Cual es el valor con el que iniciaran?: ";
+      cin >> valor;
+      for (int i = 0; i < n; i++) {
+        datos[i] = valor;
+      }
       break;
 
     case 30:
