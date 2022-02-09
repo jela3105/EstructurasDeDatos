@@ -4,6 +4,8 @@
 
 using namespace std;
 
+void imprime(int[]);
+
 int main() {
 
   int datos[20] = {0};
@@ -35,10 +37,7 @@ int main() {
 
     switch (opcion) {
     case 0:
-      cout << "\nContenido del arreglo \n";
-      cout << "Subindice	Valor almacenado\n";
-      for (int i = 0; i < 20; i++)
-        cout << "    " << i << "\t\t\t\t" << datos[i] << endl;
+      imprime(datos);
       break;
 
     case 1:
@@ -204,11 +203,16 @@ int main() {
       } else
         cout << "\n    No pueden haber mas de 20 elementos";
       break;
-
     case 30:
       return 0;
     }
   }
-
   return 0;
+}
+
+void imprime(int x[20]) {
+  cout << "\nContenido del arreglo \n";
+  cout << "Subindice	Valor almacenado\n";
+  for (int i = 0; i < 20; i++)
+    cout << "    " << i << "\t\t\t\t" << x[i] << endl;
 }
