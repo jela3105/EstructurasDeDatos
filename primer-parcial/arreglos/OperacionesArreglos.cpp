@@ -5,6 +5,17 @@
 using namespace std;
 
 void imprime(int[]);
+int iniManu(int[], int);
+int iniAlea(int[], int);
+int iniN(int[], int);
+int sumatoria(int[], int);
+void valorMax(int[], int);
+void valorMin(int[], int);
+void busqueda(int[], int, int);
+float promedio(int[], int);
+void mayoresPromedio(int[], int);
+int insertarPosCero(int[], int);
+int insertarPosFinal(int[], int);
 
 int main() {
 
@@ -20,13 +31,13 @@ int main() {
     cout << "0.  Impresion\n";
     cout << "1.  Inicializacion manual\n";
     cout << "2.  Inicializacion aleatoria\n";
-    cout << "3.  Sumatoria del contenido del arreglo\n";
-    cout << "4.  Maximo\n";
-    cout << "5.  Minimo\n";
-    cout << "6.  Busqueda\n";
-    cout << "7.  Pomedio\n";
-    cout << "8.  Mayores al promedio\n";
-    cout << "9.  Inicializacion con N\n";
+    cout << "3.  Inicializacion con N\n";
+    cout << "4.  Sumatoria del contenido del arreglo\n";
+    cout << "5.  Maximo\n";
+    cout << "6.  Minimo\n";
+    cout << "7.  Busqueda\n";
+    cout << "8.  Pomedio\n";
+    cout << "9.  Mayores al promedio\n";
     cout << "10. Insertar al inicio\n";
     cout << "11. Insertar un bloque al inicio\n";
     cout << "12. Insertar al final\n";
