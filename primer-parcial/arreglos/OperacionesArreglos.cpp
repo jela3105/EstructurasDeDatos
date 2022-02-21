@@ -11,7 +11,7 @@ void inicializarConN(int[], int &);
 int sumatoria(int[], int &);
 void valorMax(int[]);
 void valorMin(int[], int &);
-int busqueda(int[], int);
+int busqueda(int[20], int);
 float promedio(int[], int);
 void mayoresPromedio(int[], int);
 void insertarPosCero(int[], int &);
@@ -23,7 +23,7 @@ int eliminarInicio(int[20], int &);
 int eliminarFinal(int[20], int &);
 void eliminarPares(int[20], int &);
 bool buscarYEliminar(int[20], int &, int);
-bool buscarYModificar(int[20], int &, int);
+bool buscarYModificar(int[20], int &, int, int);
 
 int main() {
 
@@ -87,10 +87,10 @@ int main() {
       cin >> dato_buscar;
       encontrado = busqueda(datos, dato_buscar);
       if (encontrado != -1)
-        cout << "    El dato " << dato_buscar << " si fue encontrado"
+        cout << "\n    El dato " << dato_buscar << " si fue encontrado"
              << " en el subinidice " << encontrado << endl;
       else
-        cout << "    El dato " << dato_buscar << " no fue encontrado";
+        cout << " \n   El dato " << dato_buscar << " no fue encontrado";
       break;
     case 8:
       cout << promedio(datos, elementos_arreglo);
@@ -129,11 +129,16 @@ int main() {
       cin >> n;
       buscarYEliminar(datos, elementos_arreglo, n)
           ? cout << "\n    Se ha eliminado el elemento"
-          : cout << "\n    El elemento " << n
-                 << " se ha eliminado correctamente";
+          : cout << "\n    El elemento " << n << " no existe";
       break;
     case 19:
-
+      cout << "\n    Ingresa el dato a eliminar: ";
+      cin >> n;
+      cout << "\n    Ingresa el nuevo valor: ";
+      cin >> valor;
+      buscarYModificar(datos, elementos_arreglo, n, valor)
+          ? cout << "\n    Se ha modificado el elemento"
+          : cout << "\n    El elemento " << n << "no se ha encontrado";
       break;
     case 30:
       return 0;
@@ -229,7 +234,6 @@ void valorMin(int x[20], int &elementos_arreglo) {
 
 int busqueda(int datos[20], int dato_buscar) {
   int encontrado, subinidice;
-  cin >> dato_buscar;
   encontrado = false;
   for (int i = 0; i < 20; i++) {
     if (datos[i] == dato_buscar) {
@@ -240,8 +244,7 @@ int busqueda(int datos[20], int dato_buscar) {
   }
   if (encontrado)
     return subinidice;
-  else
-    return -1;
+  return -1;
 }
 
 float promedio(int datos[20], int elementos_arreglo) {
@@ -396,6 +399,16 @@ void eliminarPares(int datos[20], int &elementos_arreglo) {
   elementos_arreglo = total_elementos;
 }
 
-bool buscarYEliminar(int datos[20], int &elementos_arreglo, int x) {}
+bool buscarYEliminar(int datos[20], int &elementos_arreglo, int x) {
+  int existe = busqueda(datos, x);
+  if (existe == -1)
+    return false;
+  for (int i = existe; i < elementos_arreglo; i++) {
+    datos[i] = datos[i + 1];
+  }
+  return true;
+}
 
-bool buscarYModificar(int datos[20], int &elementos_arreglo, int x) {}
+bool buscarYModificar(int datos[20], int &elementos_arreglo, int x, int ne) {
+  return true;
+}
