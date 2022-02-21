@@ -11,11 +11,19 @@ void inicializarConN(int[], int &);
 int sumatoria(int[], int &);
 void valorMax(int[]);
 void valorMin(int[], int &);
-void busqueda(int[]);
+int busqueda(int[], int);
 float promedio(int[], int);
 void mayoresPromedio(int[], int);
 void insertarPosCero(int[], int &);
 void insertarPosFinal(int[], int &);
+void insertarBloqueInicio(int[], int &);
+void insertarBloqueFinal(int[], int &);
+void insertarBloqueX(int[], int &);
+int eliminarInicio(int[20], int &);
+int eliminarFinal(int[20], int &);
+void eliminarPares(int[20], int &);
+bool buscarYEliminar(int[20], int &, int);
+bool buscarYModificar(int[20], int &, int);
 
 int main() {
 
@@ -39,6 +47,14 @@ int main() {
     cout << "9.  Mayores al promedio\n";
     cout << "10. Insertar al inicio\n";
     cout << "11. Insertar al final\n";
+    cout << "12. Insertar bloque al inicio\n";
+    cout << "13. Insertar bloque al final\n";
+    cout << "14. Insertar bloque en posicion X\n";
+    cout << "15. Eliminar inicio\n";
+    cout << "16. Eliminar final\n";
+    cout << "17. Eliminar pares\n";
+    cout << "18. Buscar y eliminar\n";
+    cout << "19. Buscar modificar\n";
     cout << "30. Salir\n";
     cout << "    Selecciona una opcion: ";
     cin >> opcion;
@@ -67,7 +83,14 @@ int main() {
       valorMin(datos, elementos_arreglo);
       break;
     case 7:
-      busqueda(datos);
+      cout << "\n    Ingresa el dato a buscar: ";
+      cin >> dato_buscar;
+      encontrado = busqueda(datos, dato_buscar);
+      if (encontrado != -1)
+        cout << "    El dato " << dato_buscar << " si fue encontrado"
+             << " en el subinidice " << encontrado << endl;
+      else
+        cout << "    El dato " << dato_buscar << " no fue encontrado";
       break;
     case 8:
       cout << promedio(datos, elementos_arreglo);
@@ -80,6 +103,37 @@ int main() {
       break;
     case 11:
       insertarPosFinal(datos, elementos_arreglo);
+      break;
+    case 12:
+      insertarBloqueInicio(datos, elementos_arreglo);
+      break;
+    case 13:
+      insertarBloqueFinal(datos, elementos_arreglo);
+      break;
+    case 14:
+      insertarBloqueX(datos, elementos_arreglo);
+      break;
+    case 15:
+      cout << "\n    Se elimino el dato: "
+           << eliminarInicio(datos, elementos_arreglo);
+      break;
+    case 16:
+      cout << "\n    Se elimino el dato: "
+           << eliminarFinal(datos, elementos_arreglo);
+      break;
+    case 17:
+      eliminarPares(datos, elementos_arreglo);
+      break;
+    case 18:
+      cout << "\n    Ingresa el dato a eliminar: ";
+      cin >> n;
+      buscarYEliminar(datos, elementos_arreglo, n)
+          ? cout << "\n    Se ha eliminado el elemento"
+          : cout << "\n    El elemento " << n
+                 << " se ha eliminado correctamente";
+      break;
+    case 19:
+
       break;
     case 30:
       return 0;
@@ -173,9 +227,8 @@ void valorMin(int x[20], int &elementos_arreglo) {
        << "    Y el subinidice es: " << subinidice << endl;
 }
 
-void busqueda(int datos[20]) {
-  int dato_buscar, encontrado, subinidice;
-  cout << "\n    Ingresa el dato a buscar: ";
+int busqueda(int datos[20], int dato_buscar) {
+  int encontrado, subinidice;
   cin >> dato_buscar;
   encontrado = false;
   for (int i = 0; i < 20; i++) {
@@ -186,10 +239,9 @@ void busqueda(int datos[20]) {
     }
   }
   if (encontrado)
-    cout << "    El dato " << dato_buscar << " si fue encontrado"
-         << " en el subinidice " << subinidice << endl;
+    return subinidice;
   else
-    cout << "    El dato " << dato_buscar << " no fue encontrado" << endl;
+    return -1;
 }
 
 float promedio(int datos[20], int elementos_arreglo) {
@@ -215,24 +267,135 @@ void mayoresPromedio(int datos[20], int elementos_arreglo) {
 }
 
 void insertarPosCero(int datos[20], int &elementos_arreglo) {
-  int valor;
-  cout << "\n    Ingrese el numero: ";
-  cin >> valor;
-  for (int i = elementos_arreglo; i > 0; i--) {
-    datos[i] = datos[i - 1];
-  }
-  datos[0] = valor;
-  if (elementos_arreglo < 20)
+  if (elementos_arreglo < 20) {
+    int valor;
+    cout << "\n    Ingrese el numero: ";
+    cin >> valor;
+    for (int i = elementos_arreglo; i > 0; i--) {
+      datos[i] = datos[i - 1];
+    }
+    datos[0] = valor;
     elementos_arreglo++;
+  } else
+    cout << "    El arreglo excede el tamano";
 }
 
 void insertarPosFinal(int datos[20], int &elementos_arreglo) {
-  int valor;
-  cout << "\n    Ingrese el numero: ";
-  cin >> valor;
   if (elementos_arreglo < 20) {
+    int valor;
+    cout << "\n    Ingrese el numero: ";
+    cin >> valor;
     datos[elementos_arreglo] = valor;
     elementos_arreglo++;
   } else
-    datos[19] = valor;
+    cout << "    El arreglo excede el tamano";
 }
+
+void insertarBloqueInicio(int datos[20], int &elementos_arreglo) {
+  int n;
+  cout << "\n    Ingrese el numero de elementos a agregar: ";
+  cin >> n;
+  if (elementos_arreglo + n <= 20) {
+    for (int i = elementos_arreglo - 1; i >= 0; i--) {
+      datos[i + n] = datos[i];
+    }
+    for (int i = 0; i < n; i++) {
+      datos[i] = 1 + rand() % 100;
+    }
+    elementos_arreglo += n;
+  } else
+    cout << "\n    No pueden haber mas de 20 elementos";
+}
+
+void insertarBloqueFinal(int datos[20], int &elementos_arreglo) {
+  int n;
+  cout << "\n    Ingrese el numero de elementos a agregar: ";
+  cin >> n;
+  if (elementos_arreglo + n <= 20) {
+    for (int i = 0; i < n; i++) {
+      datos[elementos_arreglo + i] = 1 + rand() % 100;
+    }
+    elementos_arreglo += n;
+  } else
+    cout << "\n    No pueden haber mas de 20 elementos";
+}
+
+void insertarBloqueX(int datos[20], int &elementos_arreglo) {
+  int n, x;
+  cout << "\n    Ingrese el numero de elementos a agregar: ";
+  cin >> n;
+  if (elementos_arreglo + n > 20) {
+    cout << "\n    El numero de elementos nuevos excederia el limite";
+    return;
+  }
+  cout
+      << "\n    Ingrese el subinidice en el que quiere agregar los elementos: ";
+  cin >> x;
+  if (x + 1 > elementos_arreglo) {
+    cout << "\n    Ese indice no esta dentro del rango";
+    return;
+  }
+
+  for (int i = elementos_arreglo - 1; i >= x; i--) {
+    datos[n + i] = datos[i];
+  }
+  elementos_arreglo += n;
+  for (int i = x; i < x + n; i++) {
+    cout << "\n    Ingresa el elemento datos[" << i << "]: ";
+    cin >> datos[i];
+  }
+}
+
+int eliminarInicio(int datos[20], int &elementos_arreglo) {
+  int inicio = datos[0];
+  for (int i = 1; i < elementos_arreglo; i++) {
+    datos[i - 1] = datos[i];
+  }
+  datos[elementos_arreglo - 1] = 0;
+  elementos_arreglo--;
+  return inicio;
+}
+
+int eliminarFinal(int datos[20], int &elementos_arreglo) {
+  int ultimo = datos[elementos_arreglo - 1];
+  datos[elementos_arreglo - 1] = 0;
+  elementos_arreglo--;
+  return ultimo;
+}
+
+void eliminarPares(int datos[20], int &elementos_arreglo) {
+  int encontrados = 0;
+
+  for (int i = 0; i < elementos_arreglo; i++) {
+    if (datos[i] % 2 == 0) {
+      datos[i] = -1;
+      encontrados++;
+    }
+  }
+
+  int total_elementos = elementos_arreglo - encontrados;
+
+  for (int i = 0; i < elementos_arreglo; i++) {
+    if (datos[i] == -1 and encontrados) {
+      for (int j = i + 1; j < elementos_arreglo; j++) {
+        if (datos[j] == -1)
+          continue;
+        datos[i] = datos[j];
+        datos[j] = -1;
+        encontrados--;
+        break;
+      }
+    }
+  }
+
+  for (int i = 0; i < 20; i++) {
+    if (datos[i] == -1)
+      datos[i] = 0;
+  }
+
+  elementos_arreglo = total_elementos;
+}
+
+bool buscarYEliminar(int datos[20], int &elementos_arreglo, int x) {}
+
+bool buscarYModificar(int datos[20], int &elementos_arreglo, int x) {}
