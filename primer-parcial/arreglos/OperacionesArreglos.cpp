@@ -132,13 +132,13 @@ int main() {
           : cout << "\n    El elemento " << n << " no existe";
       break;
     case 19:
-      cout << "\n    Ingresa el dato a eliminar: ";
+      cout << "\n    Ingresa el dato a modificar: ";
       cin >> n;
       cout << "\n    Ingresa el nuevo valor: ";
       cin >> valor;
       buscarYModificar(datos, elementos_arreglo, n, valor)
           ? cout << "\n    Se ha modificado el elemento"
-          : cout << "\n    El elemento " << n << "no se ha encontrado";
+          : cout << "\n    El elemento " << n << " no se ha encontrado";
       break;
     case 30:
       return 0;
@@ -410,5 +410,9 @@ bool buscarYEliminar(int datos[20], int &elementos_arreglo, int x) {
 }
 
 bool buscarYModificar(int datos[20], int &elementos_arreglo, int x, int ne) {
+  int existe = busqueda(datos, x);
+  if (existe == -1)
+    return false;
+  datos[existe] = ne;
   return true;
 }
