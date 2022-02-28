@@ -24,7 +24,9 @@ int eliminarFinal(int[20], int &);
 void eliminarPares(int[20], int &);
 bool buscarYEliminar(int[20], int &, int);
 bool buscarYModificar(int[20], int &, int, int);
-void ordenarAscendente(int[20], int);
+void ordenarBurbuja(int[20], int);
+void shakerSort(int[20], int);
+void insercionDirecta(int[20], int);
 
 int main() {
 
@@ -145,7 +147,13 @@ int main() {
           : cout << "\n    El elemento " << n << " no se ha encontrado";
       break;
     case 20:
-      ordenarAscendente(datos, elementos_arreglo);
+      ordenarBurbuja(datos, elementos_arreglo);
+      break;
+    case 21:
+      shakerSort(datos, elementos_arreglo);
+      break;
+    case 22:
+      insercionDirecta(datos, elementos_arreglo);
       break;
     case 30:
       return 0;
@@ -425,7 +433,7 @@ bool buscarYModificar(int datos[20], int &elementos_arreglo, int x, int ne) {
   return true;
 }
 
-void ordenarAscendente(int datos[20], int elementos_arreglo) {
+void ordenarBurbuja(int datos[20], int elementos_arreglo) {
   if (elementos_arreglo <= 1) {
     cout << "    No hay suficientes elementos para ordenar";
     return;
@@ -447,6 +455,70 @@ void ordenarAscendente(int datos[20], int elementos_arreglo) {
       for (int k = 0; k < elementos_arreglo; k++)
         cout << datos[k] << " ";
       cout << endl;
+    }
+  }
+}
+
+void shakerSort(int datos[20], int elementos_arreglo) {
+  if (elementos_arreglo <= 1) {
+    cout << "    No hay suficientes elementos para ordenar";
+    return;
+  }
+  cout << "    Shakersort" << endl;
+  int pasadas = elementos_arreglo - 1;
+  int contador_pasadas = 1;
+  while (pasadas > 0) {
+    cout << "    \nPasada " << contador_pasadas << endl;
+    cout << "    \nIda\n";
+    for (int i = 1; i < elementos_arreglo; i++) {
+      cout << datos[i - 1] << " > " << datos[i];
+      if (datos[i - 1] > datos[i]) {
+        cout << "\tV\t";
+        int temp = datos[i];
+        datos[i] = datos[i - 1];
+        datos[i - 1] = temp;
+      } else
+        cout << "\tF\t";
+      for (int k = 0; k < elementos_arreglo; k++)
+        cout << datos[k] << " ";
+      cout << endl;
+    }
+    cout << "    \nRegreso\n";
+    for (int i = elementos_arreglo - 1; i >= 1; i--) {
+      cout << datos[i] << " < " << datos[i - 1];
+      if (datos[i] < datos[i - 1]) {
+        cout << "\tV\t";
+        int temp = datos[i];
+        datos[i] = datos[i - 1];
+        datos[i - 1] = temp;
+      } else
+        cout << "\tF\t";
+      for (int k = 0; k < elementos_arreglo; k++)
+        cout << datos[k] << " ";
+      cout << endl;
+    }
+    contador_pasadas++;
+    pasadas -= 2;
+  }
+}
+
+void insercionDirecta(int datos[20], int elementos_arreglo) {
+  if (elementos_arreglo <= 1) {
+    cout << "    No hay suficientes elementos para ordenar";
+    return;
+  }
+
+  cout << "    Insercion Directa" << endl;
+  for (int i = 1; i < elementos_arreglo; i++) {
+    cout << "Pasada " << i + 1 << endl;
+    int j = i;
+    while (datos[j] < datos[j - 1]) {
+      int temp = datos[j];
+      datos[j] = datos[j - 1];
+      datos[j - 1] = temp;
+      j--;
+      if (j == 0)
+        break;
     }
   }
 }
