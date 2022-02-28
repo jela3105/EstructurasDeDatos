@@ -24,6 +24,7 @@ int eliminarFinal(int[20], int &);
 void eliminarPares(int[20], int &);
 bool buscarYEliminar(int[20], int &, int);
 bool buscarYModificar(int[20], int &, int, int);
+void ordenarAscendente(int[20], int);
 
 int main() {
 
@@ -55,6 +56,9 @@ int main() {
     cout << "17. Eliminar pares\n";
     cout << "18. Buscar y eliminar\n";
     cout << "19. Buscar modificar\n";
+    cout << "20. Ordenar burbuja\n";
+    cout << "21. Shakersort\n";
+    cout << "22. Insercion directa\n";
     cout << "30. Salir\n";
     cout << "    Selecciona una opcion: ";
     cin >> opcion;
@@ -139,6 +143,9 @@ int main() {
       buscarYModificar(datos, elementos_arreglo, n, valor)
           ? cout << "\n    Se ha modificado el elemento"
           : cout << "\n    El elemento " << n << " no se ha encontrado";
+      break;
+    case 20:
+      ordenarAscendente(datos, elementos_arreglo);
       break;
     case 30:
       return 0;
@@ -406,6 +413,7 @@ bool buscarYEliminar(int datos[20], int &elementos_arreglo, int x) {
   for (int i = existe; i < elementos_arreglo; i++) {
     datos[i] = datos[i + 1];
   }
+  elementos_arreglo--;
   return true;
 }
 
@@ -415,4 +423,30 @@ bool buscarYModificar(int datos[20], int &elementos_arreglo, int x, int ne) {
     return false;
   datos[existe] = ne;
   return true;
+}
+
+void ordenarAscendente(int datos[20], int elementos_arreglo) {
+  if (elementos_arreglo <= 1) {
+    cout << "    No hay suficientes elementos para ordenar";
+    return;
+  }
+
+  cout << "    Metodo burbuja" << endl;
+  int pasadas = elementos_arreglo - 1;
+  for (int p = 0; p < pasadas; p++) {
+    cout << "    \nPasada " << p + 1 << endl;
+    for (int i = 1; i < elementos_arreglo; i++) {
+      cout << datos[i - 1] << " > " << datos[i];
+      if (datos[i - 1] > datos[i]) {
+        cout << "\tV\t";
+        int temp = datos[i];
+        datos[i] = datos[i - 1];
+        datos[i - 1] = temp;
+      } else
+        cout << "\tF\t";
+      for (int k = 0; k < elementos_arreglo; k++)
+        cout << datos[k] << " ";
+      cout << endl;
+    }
+  }
 }
