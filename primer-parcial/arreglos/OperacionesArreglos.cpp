@@ -189,7 +189,7 @@ void inicializarAleatoriamente(int x[20], int &elementos_arreglo) {
   int n;
   cout << "    Cuantos datos aleatoreos desea?: ";
   cin >> n;
-  if (n > elementos_arreglo)
+  if (n > elementos_arreglo and n <= 20)
     elementos_arreglo = n;
   if (n <= 20) {
     for (int i = 0; i < n; i++) {
@@ -508,17 +508,29 @@ void insercionDirecta(int datos[20], int elementos_arreglo) {
     return;
   }
 
-  cout << "    Insercion Directa" << endl;
+  cout << "    \nInsercion Directa" << endl;
+  for (int k = 0; k < elementos_arreglo; k++)
+    cout << datos[k] << " ";
+  cout << endl;
   for (int i = 1; i < elementos_arreglo; i++) {
-    cout << "Pasada " << i + 1 << endl;
+    cout << "\nPasada " << i << endl;
     int j = i;
-    while (datos[j] < datos[j - 1]) {
-      int temp = datos[j];
-      datos[j] = datos[j - 1];
-      datos[j - 1] = temp;
-      j--;
-      if (j == 0)
+    while (j) {
+      cout << datos[j] << " < " << datos[j - 1];
+      bool intercambiar = datos[j] < datos[j - 1];
+      if (intercambiar) {
+        cout << "\tV\t";
+        int temp = datos[j];
+        datos[j] = datos[j - 1];
+        datos[j - 1] = temp;
+      } else
+        cout << "\tF\t";
+      for (int k = 0; k < elementos_arreglo; k++)
+        cout << datos[k] << " ";
+      cout << endl;
+      if (!intercambiar)
         break;
+      j--;
     }
   }
 }
