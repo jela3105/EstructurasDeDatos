@@ -27,6 +27,7 @@ bool buscarYModificar(int[20], int &, int, int);
 void ordenarBurbuja(int[20], int);
 void shakerSort(int[20], int);
 void insercionDirecta(int[20], int);
+void seleccionDirecta(int[20], int);
 
 int main() {
 
@@ -61,6 +62,7 @@ int main() {
     cout << "20. Ordenar burbuja\n";
     cout << "21. Shakersort\n";
     cout << "22. Insercion directa\n";
+    cout << "23. Seleccion directa\n";
     cout << "30. Salir\n";
     cout << "    Selecciona una opcion: ";
     cin >> opcion;
@@ -154,6 +156,9 @@ int main() {
       break;
     case 22:
       insercionDirecta(datos, elementos_arreglo);
+      break;
+    case 23:
+      seleccionDirecta(datos, elementos_arreglo);
       break;
     case 30:
       return 0;
@@ -532,5 +537,32 @@ void insercionDirecta(int datos[20], int elementos_arreglo) {
         break;
       j--;
     }
+  }
+}
+
+void seleccionDirecta(int datos[20], int elementos_arreglo) {
+  if (elementos_arreglo <= 1) {
+    cout << "    No hay suficientes elementos para ordenar";
+    return;
+  }
+
+  cout << "    \nSeleccion directa" << endl;
+  for (int i = 0; i < elementos_arreglo; i++) {
+    int menor = datos[i], indice = -1;
+    for (int j = i + 1; j < elementos_arreglo; j++) {
+      if (datos[j] < menor) {
+        menor = datos[j];
+        indice = j;
+      }
+    }
+    if (indice != -1) {
+      int temp = datos[i];
+      datos[i] = datos[indice];
+      datos[indice] = temp;
+    }
+    cout << "    menor= " << menor << "\t";
+    for (int k = 0; k < elementos_arreglo; k++)
+      cout << datos[k] << " ";
+    cout << endl;
   }
 }
