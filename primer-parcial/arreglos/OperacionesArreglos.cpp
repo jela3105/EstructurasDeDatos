@@ -469,13 +469,12 @@ void shakerSort(int datos[20], int elementos_arreglo) {
     cout << "    No hay suficientes elementos para ordenar";
     return;
   }
-  cout << "    Shakersort" << endl;
-  int pasadas = elementos_arreglo - 1;
-  int contador_pasadas = 1;
-  while (pasadas > 0) {
-    cout << "    \nPasada " << contador_pasadas << endl;
-    cout << "    \nIda\n";
-    for (int i = 1; i < elementos_arreglo; i++) {
+  cout << "    \nShakersort" << endl;
+  int inicio = 0, ultimo = elementos_arreglo - 1, pasadas = 1;
+  while (inicio < ultimo) {
+    cout << "    \nPasada " << pasadas << endl;
+    cout << "    Derecha a izquierda" << endl;
+    for (int i = ultimo; i > inicio; i--) {
       cout << datos[i - 1] << " > " << datos[i];
       if (datos[i - 1] > datos[i]) {
         cout << "\tV\t";
@@ -488,22 +487,23 @@ void shakerSort(int datos[20], int elementos_arreglo) {
         cout << datos[k] << " ";
       cout << endl;
     }
-    cout << "    \nRegreso\n";
-    for (int i = elementos_arreglo - 1; i >= 1; i--) {
-      cout << datos[i] << " < " << datos[i - 1];
-      if (datos[i] < datos[i - 1]) {
+    inicio++;
+    cout << "    Izquierda a derecha" << endl;
+    for (int i = inicio; i < ultimo; i++) {
+      cout << datos[i] << " > " << datos[i + 1];
+      if (datos[i] > datos[i + 1]) {
         cout << "\tV\t";
         int temp = datos[i];
-        datos[i] = datos[i - 1];
-        datos[i - 1] = temp;
+        datos[i] = datos[i + 1];
+        datos[i + 1] = temp;
       } else
         cout << "\tF\t";
       for (int k = 0; k < elementos_arreglo; k++)
         cout << datos[k] << " ";
       cout << endl;
     }
-    contador_pasadas++;
-    pasadas -= 2;
+    ultimo--;
+    pasadas++;
   }
 }
 
