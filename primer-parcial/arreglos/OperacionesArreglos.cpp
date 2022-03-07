@@ -6,19 +6,19 @@ using namespace std;
 
 void imprime(int[]);
 void inicializarManualmente(int[], int &);
-void inicializarAleatoriamente(int[], int &);
-void inicializarConN(int[], int &);
+void inicializarAleatoriamente(int[], int &, int);
+void inicializarConN(int[], int &, int, int);
 int sumatoria(int[], int &);
 void valorMax(int[]);
 void valorMin(int[], int &);
 int busqueda(int[20], int);
 float promedio(int[], int);
 void mayoresPromedio(int[], int);
-void insertarPosCero(int[], int &);
-void insertarPosFinal(int[], int &);
-void insertarBloqueInicio(int[], int &);
-void insertarBloqueFinal(int[], int &);
-void insertarBloqueX(int[], int &);
+void insertarPosCero(int[], int &, int);
+void insertarPosFinal(int[], int &, int);
+void insertarBloqueInicio(int[], int &, int);
+void insertarBloqueFinal(int[], int &, int);
+void insertarBloqueX(int[], int &, int, int);
 int eliminarInicio(int[20], int &);
 int eliminarFinal(int[20], int &);
 void eliminarPares(int[20], int &);
@@ -28,6 +28,7 @@ void ordenarBurbuja(int[20], int);
 void shakerSort(int[20], int);
 void insercionDirecta(int[20], int);
 void seleccionDirecta(int[20], int);
+void imprimirArregloHorizontal(int[20], int);
 
 int main() {
 
@@ -75,10 +76,16 @@ int main() {
       inicializarManualmente(datos, elementos_arreglo);
       break;
     case 2:
-      inicializarAleatoriamente(datos, elementos_arreglo);
+      cout << "    Cuantos datos aleatoreos desea?: ";
+      cin >> n;
+      inicializarAleatoriamente(datos, elementos_arreglo, n);
       break;
     case 3:
-      inicializarConN(datos, elementos_arreglo);
+      cout << "\n    Cuantos datos deseas ingresar?: ";
+      cin >> n;
+      cout << "\n    Cual es el valor con el que iniciaran?: ";
+      cin >> valor;
+      inicializarConN(datos, elementos_arreglo, n, valor);
       break;
     case 4:
       cout << "\n    La suma es: " << sumatoria(datos, elementos_arreglo)
@@ -101,25 +108,39 @@ int main() {
         cout << " \n   El dato " << dato_buscar << " no fue encontrado";
       break;
     case 8:
-      cout << promedio(datos, elementos_arreglo);
+      cout << "\n    El promedio es: " << promedio(datos, elementos_arreglo)
+           << endl;
       break;
     case 9:
       mayoresPromedio(datos, elementos_arreglo);
       break;
     case 10:
-      insertarPosCero(datos, elementos_arreglo);
+      cout << "\n    Ingrese el numero: ";
+      cin >> valor;
+      insertarPosCero(datos, elementos_arreglo, valor);
       break;
     case 11:
-      insertarPosFinal(datos, elementos_arreglo);
+      cout << "\n    Ingrese el numero: ";
+      cin >> valor;
+      insertarPosFinal(datos, elementos_arreglo, valor);
       break;
     case 12:
-      insertarBloqueInicio(datos, elementos_arreglo);
+      cout << "\n    Ingrese el numero de elementos a agregar: ";
+      cin >> n;
+      insertarBloqueInicio(datos, elementos_arreglo, n);
       break;
     case 13:
-      insertarBloqueFinal(datos, elementos_arreglo);
+      cout << "\n    Ingrese el numero de elementos a agregar: ";
+      cin >> n;
+      insertarBloqueFinal(datos, elementos_arreglo, n);
       break;
     case 14:
-      insertarBloqueX(datos, elementos_arreglo);
+      cout << "\n    Ingrese el numero de elementos a agregar: ";
+      cin >> n;
+      cout << "\n    Ingrese el subinidice en el que quiere agregar los "
+              "elementos: ";
+      cin >> subinidice;
+      insertarBloqueX(datos, elementos_arreglo, n, subinidice);
       break;
     case 15:
       cout << "\n    Se elimino el dato: "
@@ -190,10 +211,7 @@ void inicializarManualmente(int x[20], int &elementos_arreglo) {
   }
 }
 
-void inicializarAleatoriamente(int x[20], int &elementos_arreglo) {
-  int n;
-  cout << "    Cuantos datos aleatoreos desea?: ";
-  cin >> n;
+void inicializarAleatoriamente(int x[20], int &elementos_arreglo, int n) {
   if (n > elementos_arreglo and n <= 20)
     elementos_arreglo = n;
   if (n <= 20) {
@@ -205,15 +223,10 @@ void inicializarAleatoriamente(int x[20], int &elementos_arreglo) {
   }
 }
 
-void inicializarConN(int x[20], int &elementos_arreglo) {
-  int n, valor;
-  cout << "\n    Cuantos datos deseas ingresar?: ";
-  cin >> n;
+void inicializarConN(int x[20], int &elementos_arreglo, int n, int valor) {
   if (n > elementos_arreglo)
     elementos_arreglo = n;
 
-  cout << "\n    Cual es el valor con el que iniciaran?: ";
-  cin >> valor;
   for (int i = 0; i < n; i++) {
     x[i] = valor;
   }
@@ -274,7 +287,6 @@ float promedio(int datos[20], int elementos_arreglo) {
     suma += datos[i];
   }
   promedio = (float)suma / elementos_arreglo;
-  cout << "\n    El promedio es: " << promedio << endl;
   return promedio;
 }
 
@@ -289,11 +301,8 @@ void mayoresPromedio(int datos[20], int elementos_arreglo) {
   }
 }
 
-void insertarPosCero(int datos[20], int &elementos_arreglo) {
+void insertarPosCero(int datos[20], int &elementos_arreglo, int valor) {
   if (elementos_arreglo < 20) {
-    int valor;
-    cout << "\n    Ingrese el numero: ";
-    cin >> valor;
     for (int i = elementos_arreglo; i > 0; i--) {
       datos[i] = datos[i - 1];
     }
@@ -303,21 +312,15 @@ void insertarPosCero(int datos[20], int &elementos_arreglo) {
     cout << "    El arreglo excede el tamano";
 }
 
-void insertarPosFinal(int datos[20], int &elementos_arreglo) {
+void insertarPosFinal(int datos[20], int &elementos_arreglo, int valor) {
   if (elementos_arreglo < 20) {
-    int valor;
-    cout << "\n    Ingrese el numero: ";
-    cin >> valor;
     datos[elementos_arreglo] = valor;
     elementos_arreglo++;
   } else
     cout << "    El arreglo excede el tamano";
 }
 
-void insertarBloqueInicio(int datos[20], int &elementos_arreglo) {
-  int n;
-  cout << "\n    Ingrese el numero de elementos a agregar: ";
-  cin >> n;
+void insertarBloqueInicio(int datos[20], int &elementos_arreglo, int n) {
   if (elementos_arreglo + n <= 20) {
     for (int i = elementos_arreglo - 1; i >= 0; i--) {
       datos[i + n] = datos[i];
@@ -330,10 +333,7 @@ void insertarBloqueInicio(int datos[20], int &elementos_arreglo) {
     cout << "\n    No pueden haber mas de 20 elementos";
 }
 
-void insertarBloqueFinal(int datos[20], int &elementos_arreglo) {
-  int n;
-  cout << "\n    Ingrese el numero de elementos a agregar: ";
-  cin >> n;
+void insertarBloqueFinal(int datos[20], int &elementos_arreglo, int n) {
   if (elementos_arreglo + n <= 20) {
     for (int i = 0; i < n; i++) {
       datos[elementos_arreglo + i] = 1 + rand() % 100;
@@ -343,17 +343,11 @@ void insertarBloqueFinal(int datos[20], int &elementos_arreglo) {
     cout << "\n    No pueden haber mas de 20 elementos";
 }
 
-void insertarBloqueX(int datos[20], int &elementos_arreglo) {
-  int n, x;
-  cout << "\n    Ingrese el numero de elementos a agregar: ";
-  cin >> n;
+void insertarBloqueX(int datos[20], int &elementos_arreglo, int n, int x) {
   if (elementos_arreglo + n > 20) {
     cout << "\n    El numero de elementos nuevos excederia el limite";
     return;
   }
-  cout
-      << "\n    Ingrese el subinidice en el que quiere agregar los elementos: ";
-  cin >> x;
   if (x + 1 > elementos_arreglo) {
     cout << "\n    Ese indice no esta dentro del rango";
     return;
@@ -457,9 +451,7 @@ void ordenarBurbuja(int datos[20], int elementos_arreglo) {
         datos[i - 1] = temp;
       } else
         cout << "\tF\t";
-      for (int k = 0; k < elementos_arreglo; k++)
-        cout << datos[k] << " ";
-      cout << endl;
+      imprimirArregloHorizontal(datos, elementos_arreglo);
     }
   }
 }
@@ -498,9 +490,7 @@ void shakerSort(int datos[20], int elementos_arreglo) {
         datos[i + 1] = temp;
       } else
         cout << "\tF\t";
-      for (int k = 0; k < elementos_arreglo; k++)
-        cout << datos[k] << " ";
-      cout << endl;
+      imprimirArregloHorizontal(datos, elementos_arreglo);
     }
     ultimo--;
     pasadas++;
@@ -530,9 +520,7 @@ void insercionDirecta(int datos[20], int elementos_arreglo) {
         datos[j - 1] = temp;
       } else
         cout << "\tF\t";
-      for (int k = 0; k < elementos_arreglo; k++)
-        cout << datos[k] << " ";
-      cout << endl;
+      imprimirArregloHorizontal(datos, elementos_arreglo);
       if (!intercambiar)
         break;
       j--;
@@ -561,8 +549,12 @@ void seleccionDirecta(int datos[20], int elementos_arreglo) {
       datos[indice] = temp;
     }
     cout << "    menor= " << menor << "\t";
-    for (int k = 0; k < elementos_arreglo; k++)
-      cout << datos[k] << " ";
-    cout << endl;
+    imprimirArregloHorizontal(datos, elementos_arreglo);
   }
+}
+
+void imprimirArregloHorizontal(int datos[20], int elementos_arreglo) {
+  for (int k = 0; k < elementos_arreglo; k++)
+    cout << datos[k] << " ";
+  cout << endl;
 }
