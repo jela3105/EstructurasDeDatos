@@ -9,7 +9,7 @@ using namespace std;
 int main() {
   int opc, n, i, suma, d, band, x;
   srand(time(NULL));
-  nodo *p = NULL, *f, *aux;
+  nodo *p = NULL, *f, *aux, *aux2, *nuevo;
   while (1) {
     cout << "\n* * * * MENU * * * *\n";
     cout << "0. Imprimir\n";
@@ -19,6 +19,7 @@ int main() {
     cout << "4. Inserta datos aleatoreos a la izquierda\n";
     cout << "5. Sumatoria\n";
     cout << "6. Buscar un dato\n";
+    cout << "7. Insertar antes de X valor\n";
     cout << "\n   Seleccione una opcion: ";
     cin >> opc;
     switch (opc) {
@@ -134,6 +135,35 @@ int main() {
         (band == 1) ? cout << "Dato encontrado" << endl
                     : cout << "Dato no encontrado" << endl;
       }
+      break;
+    case 7:
+      if (p == NULL)
+        cout << "Lista vacia\n";
+      else {
+        cout << "Ingresa x: ";
+        cin >> x;
+        aux = p;
+        band = 0;
+        while (aux != NULL) {
+          if (aux->dato == x) {
+            band = 1;
+            nuevo = new nodo;
+            cout << "Ingresa el dato: ";
+            cin >> nuevo->dato;
+            nuevo->liga = aux;
+            if (aux == p)
+              p = nuevo;
+            else
+              aux2->liga = nuevo;
+            break;
+          }
+          aux2 = aux;
+          aux = aux->liga;
+        }
+        band == 1 ? cout << "El dato se ha insertado"
+                  : cout << "No se encontro el dato";
+      }
+
       break;
     }
   }
