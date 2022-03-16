@@ -17,6 +17,7 @@ int main() {
     cout << "2. Insertar a la izquierda\n";
     cout << "3. Inserta datos aleatoreos a la derecha\n";
     cout << "4. Inserta datos aleatoreos a la izquierda\n";
+    cout << "5. Sumatoria\n";
     cout << "\n   Seleccione una opcion: ";
     cin >> opc;
     switch (opc) {
@@ -99,6 +100,19 @@ int main() {
           p = aux;
         }
         n--;
+      }
+      break;
+    case 5:
+      suma = 0;
+      aux = p;
+      if (aux == NULL)
+        cout << "La lista esta vacia\n";
+      else {
+        while (aux != NULL) {
+          suma += aux->dato;
+          aux = aux->liga;
+        }
+        cout << "La suma total es: " << suma << endl;
       }
       break;
     }
