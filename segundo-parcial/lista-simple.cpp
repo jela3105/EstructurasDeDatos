@@ -18,6 +18,7 @@ int main() {
     cout << "3. Inserta datos aleatoreos a la derecha\n";
     cout << "4. Inserta datos aleatoreos a la izquierda\n";
     cout << "5. Sumatoria\n";
+    cout << "6. Buscar un dato\n";
     cout << "\n   Seleccione una opcion: ";
     cin >> opc;
     switch (opc) {
@@ -113,6 +114,25 @@ int main() {
           aux = aux->liga;
         }
         cout << "La suma total es: " << suma << endl;
+      }
+      break;
+    case 6:
+      aux = p;
+      if (aux == NULL)
+        cout << "Lista vacia\n";
+      else {
+        band = 0;
+        cout << "Ingresa el dato a buscar: ";
+        cin >> d;
+        while (aux != NULL) {
+          if (aux->dato == d) {
+            band = 1;
+            break;
+          }
+          aux = aux->liga;
+        }
+        (band == 1) ? cout << "Dato encontrado" << endl
+                    : cout << "Dato no encontrado" << endl;
       }
       break;
     }
