@@ -22,6 +22,9 @@ int main() {
     cout << "7. Insertar antes de X valor\n";
     cout << "8. Insertar despues de X valor\n";
     cout << "9. Modificar x\n";
+    cout << "10. Eliminar primer nodo\n";
+    cout << "11. Eliminar ultimo nodo\n";
+    cout << "12. Eliminar nodo x\n";
     cout << "\n   Seleccione una opcion: ";
     cin >> opc;
     switch (opc) {
@@ -181,8 +184,9 @@ int main() {
             cout << "ingresa el dato: ";
             cin >> nuevo->dato;
             if (aux->liga == NULL) {
+              nuevo->liga = NULL;
               aux->liga = nuevo;
-              f = nuevo;
+              f = aux->liga;
             } else {
               aux2 = aux->liga;
               aux->liga = nuevo;
@@ -190,6 +194,7 @@ int main() {
             }
             break;
           }
+          aux = aux->liga;
         }
         (band == 1) ? cout << "Se ha agregado correctamente\n"
                     : cout << "No se ha encontrado el dato de x\n";
@@ -215,6 +220,64 @@ int main() {
         if (!band)
           cout << "No se ha encontrado el dato" << endl;
       }
+      break;
+    case 10:
+      if (p == NULL or f == NULL) {
+        cout << "Lista vacia" << endl;
+        break;
+      }
+      aux = p;
+      p = p->liga;
+      aux->liga = NULL;
+      delete aux;
+      break;
+    case 11:
+      if (p == NULL or f == NULL) {
+        cout << "Lista vacia" << endl;
+        break;
+      }
+      if (p == f) {
+        delete p;
+        p = NULL;
+        f = NULL;
+        break;
+      }
+      aux = p;
+      while (aux->liga != f) {
+        aux = aux->liga;
+      }
+      delete f;
+      aux->liga = NULL;
+      f = aux;
+      break;
+    case 12:
+      if (p == NULL) {
+        cout << "Lista vacia" << endl;
+        break;
+      }
+      cout << "Ingresa x: ";
+      cin >> x;
+      band = 0;
+      if (p->dato == x) {
+        aux = p;
+        p = p->liga;
+        aux->liga = NULL;
+        delete aux;
+        break;
+      }
+      aux = p;
+      while (aux->dato != x and aux != NULL) {
+        aux2 = aux;
+        aux = aux->liga;
+        cout << aux->dato << " -> ";
+      }
+      if (aux != NULL) {
+        aux2->liga = aux->liga;
+        aux->liga = NULL;
+        delete aux;
+        break;
+      }
+      cout << "No se ha encontrado el dato" << endl;
       break;
     }
   }
