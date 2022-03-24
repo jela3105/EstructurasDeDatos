@@ -266,18 +266,21 @@ int main() {
         break;
       }
       aux = p;
-      while (aux->dato != x and aux != NULL) {
+      band = 0;
+      while (aux != NULL) {
+        if (aux->dato == x) {
+          band = 1;
+          break;
+        }
         aux2 = aux;
         aux = aux->liga;
-        cout << aux->dato << " -> ";
       }
-      if (aux != NULL) {
+      if (band) {
         aux2->liga = aux->liga;
         aux->liga = NULL;
         delete aux;
-        break;
-      }
-      cout << "No se ha encontrado el dato" << endl;
+      } else
+        cout << "No se ha encontrado el dato" << endl;
       break;
     }
   }
