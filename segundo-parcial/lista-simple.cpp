@@ -25,6 +25,8 @@ int main() {
     cout << "10. Eliminar primer nodo\n";
     cout << "11. Eliminar ultimo nodo\n";
     cout << "12. Eliminar nodo x\n";
+    cout << "13. Eliminar antes de x\n";
+    cout << "14. Eliminar despues de x\n";
     cout << "\n   Seleccione una opcion: ";
     cin >> opc;
     switch (opc) {
@@ -281,6 +283,72 @@ int main() {
         delete aux;
       } else
         cout << "No se ha encontrado el dato" << endl;
+      break;
+    case 13:
+      if (p == f) {
+        cout << "Solo hay un nodo en la lista" << endl;
+        break;
+      }
+      if (p == NULL or f == NULL) {
+        cout << "No hay datos en la lista" << endl;
+        break;
+      }
+      cout << "Ingresa x: ";
+      cin >> x;
+      if (p->dato == x) {
+        cout << "El datos ingresado es el primero, no existe uno antes" << endl;
+        break;
+      }
+      aux = p;
+      band = 0;
+      while (aux->liga != NULL) {
+        if (aux->liga->dato == x) {
+          band = 1;
+          break;
+        }
+        aux2 = aux;
+        aux = aux->liga;
+      }
+      if (band) {
+        (aux == p) ? p = aux->liga : aux2->liga = aux->liga;
+        delete aux;
+        break;
+      }
+      cout << "No se encontro el dato en la lista" << endl;
+      break;
+    case 14:
+      if (p == f) {
+        cout << "Solo hay un nodo en la lista" << endl;
+        break;
+      }
+      if (p == NULL or f == NULL) {
+        cout << "No hay datos en la lista" << endl;
+        break;
+      }
+      cout << "Ingresa x: ";
+      cin >> x;
+      if (f->dato == x) {
+        cout << "El datos ingresado es el ultimo, no existe despues" << endl;
+        break;
+      }
+      aux = p;
+      band = 0;
+      while (aux != NULL) {
+        if (aux->dato == x) {
+          band = 1;
+          break;
+        }
+        aux = aux->liga;
+      }
+      if (band) {
+        if (aux->liga->dato == f->dato)
+          f = aux;
+        aux2 = aux->liga;
+        aux->liga = aux2->liga;
+        delete aux2;
+        break;
+      }
+      cout << "No se encontro el dato en la lista" << endl;
       break;
     }
   }
