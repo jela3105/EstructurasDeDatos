@@ -386,7 +386,9 @@ int main() {
       }
       cout << "\n    Seleccion directa" << endl;
       aux = p;
-      while (aux->der != NULL) {
+      while (aux != NULL) {
+        if (aux->der == NULL)
+          break;
         menor = aux->dato;
         aux2 = aux->der;
         ultimo = aux2;
@@ -395,18 +397,21 @@ int main() {
             menor = aux2->dato;
             ultimo = aux2;
           }
+          aux2 = aux2->der;
         }
-        cout << "Menor: " << menor;
+        cout << "Menor: " << menor << "\t";
+        if (menor != aux->dato) {
+          temp = ultimo->dato;
+          ultimo->dato = aux->dato;
+          aux->dato = temp;
+        }
         inicio = p;
-        temp = ultimo->dato;
-        ultimo->dato = aux->dato;
-        aux->dato = temp;
-        aux = aux->der;
         while (inicio != NULL) {
-          cout << inicio->dato;
+          cout << inicio->dato << " ";
           inicio = inicio->der;
         }
         cout << endl;
+        aux = aux->der;
       }
       break;
     }
