@@ -10,7 +10,8 @@ struct nodo {
 
 int main() {
   srand(time(NULL));
-  nodo *p = NULL, *f = NULL, *aux = NULL, *aux2 = NULL;
+  nodo *p = NULL, *f = NULL, *aux = NULL, *aux2 = NULL, *inicio = NULL,
+       *ultimo = NULL;
   bool band;
   int opc, x, n, contador, temp;
   while (true) {
@@ -27,6 +28,9 @@ int main() {
     cout << "9. Busqueda" << endl;
     cout << "10. Elimina x" << endl;
     cout << "11. Ordenamiento burbuja" << endl;
+    cout << "12. Shaker sort" << endl;
+    cout << "13. Inserccion directa" << endl;
+    cout << "14. Seleccion directa" << endl;
     cout << "Ingresa una opcion: ";
     cin >> opc;
     switch (opc) {
@@ -268,6 +272,66 @@ int main() {
           aux2 = aux2->der;
         }
       }
+      break;
+    case 12: // shaker sort
+      contador = 0;
+      aux = p;
+      while (aux != NULL) {
+        contador++;
+        aux = aux->der;
+      }
+      if (contador <= 1) {
+        cout << "\n    No hay suficientes elementos para ordenar" << endl;
+        break;
+      }
+      cout << "Total de datos: " << contador << endl;
+      cout << "Shaker sort" << endl;
+      inicio = p;
+      ultimo = f;
+      while (inicio != ultimo) {
+        aux = ultimo;
+        cout << "    De derecha a izquierda" << endl;
+        while (aux != inicio) {
+          cout << aux->izq->dato << " > " << aux->dato;
+          if (aux->izq->dato > aux->dato) {
+            cout << "\tV\t";
+            temp = aux->izq->dato;
+            aux->izq->dato = aux->dato;
+            aux->dato = temp;
+          } else
+            cout << "\tF\t";
+          aux2 = p;
+          while (aux2 != NULL) {
+            cout << aux2->dato << " ";
+            aux2 = aux2->der;
+          }
+          cout << endl;
+          aux = aux->izq;
+        }
+        inicio = inicio->der;
+        cout << "    Izquierda a derecha" << endl;
+        aux = inicio;
+        while (aux != ultimo) {
+          cout << aux->dato << " > " << aux->der->dato;
+          if (aux->dato > aux->der->dato) {
+            cout << "\tV\t";
+            temp = aux->dato;
+            aux->dato = aux->der->dato;
+            aux->der->dato = temp;
+          } else
+            cout << "\tF\t";
+          aux2 = p;
+          while (aux2 != NULL) {
+            cout << aux2->dato << " ";
+            aux2 = aux2->der;
+          }
+          cout << endl;
+          aux = aux->der;
+        }
+        ultimo = ultimo->izq;
+      }
+      break;
+    case 13:
       break;
     }
   }
