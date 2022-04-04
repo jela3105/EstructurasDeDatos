@@ -13,7 +13,7 @@ int main() {
   nodo *p = NULL, *f = NULL, *aux = NULL, *aux2 = NULL, *inicio = NULL,
        *ultimo = NULL;
   bool band;
-  int opc, x, n, contador, temp;
+  int opc, x, n, contador, temp, menor;
   while (true) {
     cout << "\n\n=========== LISTA DOBLEMENTE ENLAZADA ===========" << endl;
     cout << "0. Imprimir de izquierda a derecha" << endl;
@@ -331,7 +331,83 @@ int main() {
         ultimo = ultimo->izq;
       }
       break;
-    case 13:
+    case 13: // inserccion directa
+      contador = 0;
+      aux = p;
+      while (aux != NULL) {
+        contador++;
+        aux = aux->der;
+      }
+      if (contador <= 1) {
+        cout << "\n    No hay suficientes elementos para ordenar" << endl;
+        break;
+      }
+      cout << "\n    Inserccion directa" << endl;
+      contador = 1;
+      aux = p->der;
+      while (aux != NULL) {
+        cout << "Pasada " << contador << endl;
+        aux2 = aux;
+        while (aux2->izq != NULL) {
+          cout << aux2->dato << " < " << aux2->izq->dato;
+          band = aux2->dato < aux2->izq->dato;
+          if (band) {
+            cout << "\tV\t";
+            temp = aux2->izq->dato;
+            aux2->izq->dato = aux2->dato;
+            aux2->dato = temp;
+          } else
+            cout << "\tF\t";
+          inicio = p;
+          while (inicio != NULL) {
+            cout << inicio->dato << " ";
+            inicio = inicio->der;
+          }
+          cout << endl;
+          if (!band)
+            break;
+          aux2 = aux2->izq;
+        }
+        contador++;
+        aux = aux->der;
+        cout << endl;
+      }
+      break;
+    case 14:
+      contador = 0;
+      aux = p;
+      while (aux != NULL) {
+        contador++;
+        aux = aux->der;
+      }
+      if (contador <= 1) {
+        cout << "\n    No hay suficientes elementos para ordenar" << endl;
+        break;
+      }
+      cout << "\n    Seleccion directa" << endl;
+      aux = p;
+      while (aux->der != NULL) {
+        menor = aux->dato;
+        aux2 = aux->der;
+        ultimo = aux2;
+        while (aux2 != NULL) {
+          if (aux2->dato < menor) {
+            menor = aux2->dato;
+            ultimo = aux2;
+          }
+        }
+        cout << "Menor: " << menor;
+        inicio = p;
+        temp = ultimo->dato;
+        ultimo->dato = aux->dato;
+        aux->dato = temp;
+        aux = aux->der;
+        while (inicio != NULL) {
+          cout << inicio->dato;
+          inicio = inicio->der;
+        }
+        cout << endl;
+      }
       break;
     }
   }
