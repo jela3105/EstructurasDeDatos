@@ -2,11 +2,15 @@
 using namespace std;
 
 struct cancion {
+  cancion() : nombre(NULL), genero(NULL), artista(NULL) {}
   string nombre, genero, artista;
-  struct cancion *anterior, *siguiente;
+  struct cancion *anterior = nullptr, *siguiente = nullptr;
 };
 
-bool reproducirCancion(struct cancion) {}
+struct ListaReproduccion {
+  struct cancion *primera, *ultima, *actual;
+  ListaReproduccion() : primera(nullptr), ultima(nullptr), actual(nullptr) {}
+};
 
 int main() {
   int opcion;
