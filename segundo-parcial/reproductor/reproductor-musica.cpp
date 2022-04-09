@@ -1,5 +1,3 @@
-#include <cctype>
-#include <cstring>
 #include <iostream>
 #include <string>
 
@@ -164,4 +162,20 @@ struct cancion *ListaReproduccion::buscar(string nombre, bool porCancion) {
   if (encontrado)
     return aux;
   return nullptr;
+}
+
+void ListaReproduccion::buscarYReproducir() {
+  bool buscarCancion;
+  string nombre;
+  cout << "Ingresa 0 si desea buscar por artista" << endl;
+  cout << "Ingresa 1 si desea buscar por cancion" << endl;
+  cin >> buscarCancion;
+  cout << "Ingrese el nombre: " << endl;
+  cin >> nombre;
+  struct cancion *cancionAReproducir = buscar(nombre, buscarCancion);
+  if (cancionAReproducir == nullptr) {
+    cout << "\n    No se ha encontrado la cancion";
+    return;
+  }
+  // reproducir cancion
 }
