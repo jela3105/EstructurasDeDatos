@@ -1,3 +1,5 @@
+#include <cctype>
+#include <cstring>
 #include <iostream>
 #include <string>
 
@@ -13,6 +15,9 @@ struct ListaReproduccion {
   ListaReproduccion() : primera(nullptr), ultima(nullptr), actual(nullptr) {}
   void agregarCancion();
   void imprimirLista();
+  void eliminar();
+  struct cancion *buscar(string, bool);
+  void buscarYReproducir();
 };
 
 int main() {
@@ -26,7 +31,7 @@ int main() {
     cout << "4. Reproduccion aleatoria" << endl;
     cout << "5. Eliminar cancion" << endl;
     cout << "6. Agregar cancion" << endl;
-    cout << "7. Buscar" << endl;
+    cout << "7. Buscar y reproducir" << endl;
     cout << "Seleccione una opcion: ";
     cin >> opcion;
     switch (opcion) {
@@ -40,11 +45,13 @@ int main() {
     case 4:
       break;
     case 5:
+      lista.eliminar();
       break;
     case 6:
       lista.agregarCancion();
       break;
     case 7:
+      lista.buscarYReproducir();
       break;
     }
   }
@@ -90,4 +97,71 @@ void ListaReproduccion::imprimirLista() {
     ;
     aux = aux->siguiente;
   } while (aux != primera);
+}
+
+void ListaReproduccion::eliminar() {
+  if (primera == nullptr) {
+    cout << "\n    Lista vacia";
+    return;
+  }
+
+  cout << "\n    Ingresa el nombre de la cancion: ";
+  string lineaVacia;
+  getline(cin, lineaVacia);
+  string nombre;
+  getline(cin, nombre);
+
+  struct cancion *aux = primera;
+  bool encontrado = false;
+  do {
+    if (aux->nombre == nombre) {
+      encontrado = true;
+      break;
+    }
+    aux = aux->siguiente;
+  } while (aux != primera);
+
+  if (!encontrado) {
+    cout << "\n    La cancion no fue encontrada";
+    return;
+  }
+
+  if (aux == primera and aux->siguiente == primera) {
+    delete aux;
+    primera = nullptr;
+    ultima = nullptr;
+    return;
+  }
+
+  aux->anterior->siguiente = aux->siguiente;
+  aux->siguiente->anterior = aux->anterior;
+
+  delete aux;
+
+  if (aux == primera) {
+    primera = primera->siguiente;
+    return;
+  }
+
+  if (aux == ultima)
+    ultima = ultima->anterior;
+}
+
+struct cancion *ListaReproduccion::buscar(string nombre, bool porCancion) {
+  // porCancion = true: va a buscar la cancion
+  // porCancion = false: va a buscar por artista
+  struct cancion *aux = primera;
+  bool encontrado = false;
+  do {
+    if ((nombre == aux->nombre and porCancion) or
+        (nombre == aux->artista and !porCancion)) {
+      encontrado = true;
+      break;
+    }
+    aux = aux->siguiente;
+  } while (aux != primera);
+
+  if (encontrado)
+    return aux;
+  return nullptr;
 }
