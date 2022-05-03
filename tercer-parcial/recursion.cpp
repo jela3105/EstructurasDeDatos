@@ -16,23 +16,24 @@ int main() {
     cin >> opcion;
     switch (opcion) {
     case 1:
-      cout << "Ingresa la base: ";
+      cout << "    Ingresa la base: ";
       cin >> x;
-      cout << "Ingresa la potencia: ";
+      cout << "    Ingresa la potencia: ";
       cin >> y;
-      cout << "La potencia es: " << potencia(x, y) << endl;
+      potencia(x, y) != -1 ? cout << "La potencia es " << potencia(x, y)
+                           : cout << "La potencia es indeterminada";
       break;
     case 2:
-      cout << "Ingresa x: ";
+      cout << "    Ingresa x: ";
       cin >> x;
-      cout << "Ingresa y: ";
+      cout << "    Ingresa y: ";
       cin >> y;
-      cout << "El maximo comun divisor es: " << MCD(x, y);
+      cout << "    El maximo comun divisor es: " << MCD(x, y);
       break;
     case 3:
-      cout << "Ingresa el numero decimal: ";
+      cout << "    Ingresa el numero decimal: ";
       cin >> x;
-      cout << "El numero decimal es: ";
+      cout << "    El numero decimal es: ";
       decimalABinario(x);
       break;
     }
@@ -41,6 +42,8 @@ int main() {
 };
 
 int potencia(int base, int exponente) {
+  if (base == 0 and exponente == 0)
+    return -1;
   if (base == 0)
     return 0;
   if (exponente == 0)
@@ -53,8 +56,7 @@ int MCD(int x, int y) {
     return y;
   if (y == 0)
     return x;
-  else
-    return MCD(y % x, x);
+  return MCD(y % x, x);
 }
 
 void decimalABinario(int x) {
