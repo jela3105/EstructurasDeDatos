@@ -11,6 +11,7 @@ void crearArbol(struct nodo *);
 int sumatoria(struct nodo *);
 int contarHijos(struct nodo *);
 void maximo(struct nodo *, int &);
+void buscar(struct nodo *, int);
 
 struct nodo {
   int dato;
@@ -18,23 +19,57 @@ struct nodo {
 };
 
 int main() {
+  int m = -1;
   nodo *raiz;
   raiz = new (nodo);
-  crearArbol(raiz);
-  cout << "Recorrido preOrden" << endl;
-  preOrden(raiz);
-  cout << endl << "Recorrido InOrden" << endl;
-  inOrden(raiz);
-  cout << endl << "Recorrido postOrden" << endl;
-  postOrden(raiz);
-  cout << endl << "Sumatoria: ";
-  cout << sumatoria(raiz);
-  cout << endl << "Promedio: ";
-  cout << (float)sumatoria(raiz) / contarHijos(raiz);
-  int m = -1;
-  maximo(raiz, m);
-  cout << endl << "Maximo: ";
-  cout << m;
+  crearArbolConsola(raiz);
+
+  while (true) {
+    int opt;
+    cout << "\n\nARBOL BINARIO" << endl;
+    cout << "1. Recorrido preOrden" << endl;
+    cout << "2. Recorrido inOrden" << endl;
+    cout << "3. Recorrido postOrden" << endl;
+    cout << "4. Sumatoria" << endl;
+    cout << "5. Promedio" << endl;
+    cout << "6. Maximo" << endl;
+    cout << "7. Busqueda" << endl;
+    cout << "Ingresa una opcion: ";
+    cin >> opt;
+    switch (opt) {
+    case 1:
+      cout << "Recorrido preOrden" << endl;
+      preOrden(raiz);
+      break;
+    case 2:
+      cout << endl << "Recorrido InOrden" << endl;
+      inOrden(raiz);
+      break;
+    case 3:
+      cout << endl << "Recorrido postOrden" << endl;
+      postOrden(raiz);
+      break;
+    case 4:
+      cout << endl << "Sumatoria: ";
+      cout << sumatoria(raiz);
+      break;
+    case 5:
+      cout << endl << "Promedio: ";
+      cout << (float)sumatoria(raiz) / contarHijos(raiz);
+      break;
+    case 6:
+      m = -1;
+      maximo(raiz, m);
+      cout << endl << "Maximo: ";
+      cout << m;
+      break;
+    case 7:
+      cout << "Ingresa el numero a buscar: ";
+      cin >> m;
+      buscar(raiz, m);
+      break;
+    }
+  }
 }
 
 void crearArbolConsola(struct nodo *raiz) {
@@ -136,4 +171,17 @@ void maximo(struct nodo *raiz, int &m) {
     m = raiz->dato;
   maximo(raiz->izq, m);
   maximo(raiz->der, m);
+}
+
+void buscar(struct nodo *raiz, int n) {
+  if (raiz == NULL)
+    return;
+
+  if (raiz->dato == n) {
+    cout << "Dato encontrado";
+    return;
+  }
+
+  buscar(raiz->der, n);
+  buscar(raiz->izq, n);
 }
