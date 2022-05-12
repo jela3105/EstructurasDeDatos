@@ -21,7 +21,10 @@ void inOrden(struct nodo *);
 void postOrden(struct nodo *);
 void preOrden(struct nodo *);
 void eliminar(int n, struct nodo *);
+void eliminarHoja(int n, struct nodo *);
+bool esHoja(int n, struct nodo *);
 bool buscar(int, struct nodo *);
+void verarbol(struct nodo *, int);
 
 int main() {
   int opt, n;
@@ -46,7 +49,10 @@ int main() {
       cout << "Ingresa n: ";
       cin >> n;
       if (buscar(n, raiz)) {
-        eliminar(n, raiz);
+        if (esHoja(n, raiz))
+          eliminarHoja(n, raiz);
+        else
+          eliminar(n, raiz);
       }
       break;
     case 4:
@@ -54,6 +60,9 @@ int main() {
       cin >> n;
       buscar(n, raiz) ? cout << "Se encontro el dato" << endl
                       : cout << "El dato NO fue encontrado";
+      break;
+    case 5:
+      verarbol(raiz, 0);
       break;
     }
   }
@@ -124,6 +133,12 @@ struct nodo *buscarMenor(struct nodo *raiz) {
   return buscarMenor(raiz->izq);
 }
 
+struct nodo *buscarMayor(struct nodo *raiz) {
+  if (raiz->der == NULL)
+    return raiz;
+  return buscarMayor(raiz->der);
+}
+
 struct nodo *buscarPadre(struct nodo *raiz, struct nodo *hijo) {
   if (raiz->der == hijo or raiz->izq == hijo) {
     return raiz;
@@ -135,9 +150,44 @@ struct nodo *buscarPadre(struct nodo *raiz, struct nodo *hijo) {
   return buscarPadre(raiz->izq, hijo);
 }
 
+bool esHoja(int n, struct nodo *raiz) {
+  if (raiz->dato == n and raiz->der == NULL and raiz->izq == NULL)
+    return true;
+
+  if (raiz->dato == n and (raiz->der != NULL or raiz->izq != NULL)) {
+    return false;
+  }
+  if (n > raiz->dato)
+    return esHoja(n, raiz->der);
+
+  return esHoja(n, raiz->izq);
+}
+void eliminarHoja(int n, struct nodo *raiz) {
+  if (raiz->der->dato == n) {
+    struct nodo *hoja = raiz->der;
+    raiz->der = NULL;
+    delete hoja;
+    return;
+  }
+
+  if (raiz->izq->dato == n) {
+    struct nodo *hoja = raiz->izq;
+    raiz->izq = NULL;
+    delete hoja;
+    return;
+  }
+
+  (n > raiz->dato) ? eliminarHoja(n, raiz->der) : eliminarHoja(n, raiz->izq);
+}
+
 void eliminar(int n, struct nodo *raiz) {
-  if (raiz == NULL) {
-    cout << "No existe el dato" << endl;
+
+  if (n == raiz->dato and raiz->der == NULL) {
+    struct nodo *mayor = buscarMayor(raiz->izq);
+    struct nodo *padre = buscarPadre(raiz, mayor);
+    raiz->dato = mayor->dato;
+    padre->der = NULL;
+    delete mayor;
     return;
   }
 
@@ -145,10 +195,8 @@ void eliminar(int n, struct nodo *raiz) {
     struct nodo *menor = buscarMenor(raiz->der);
     struct nodo *padre = buscarPadre(raiz, menor);
     raiz->dato = menor->dato;
-    if (padre->izq == menor)
-      padre->izq = NULL;
-    else
-      padre->der = NULL;
+    padre->izq = NULL;
+    delete menor;
     return;
   }
 
@@ -156,4 +204,15 @@ void eliminar(int n, struct nodo *raiz) {
     eliminar(n, raiz->der);
   else
     eliminar(n, raiz->izq);
+}
+
+void verarbol(struct nodo *raiz, int nro) {
+  int i;
+  if (raiz == NULL)
+    return;
+  verarbol(raiz->der, nro + 1);
+  for (i = 0; i < nro; i++)
+    cout << " ";
+  cout << raiz->dato << endl;
+  verarbol(raiz->izq, nro + 1);
 }
