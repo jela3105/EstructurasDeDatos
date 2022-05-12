@@ -18,6 +18,10 @@ struct nodo {
 
 void agregarDato(int, struct nodo *);
 void inOrden(struct nodo *);
+void postOrden(struct nodo *);
+void preOrden(struct nodo *);
+void eliminar(int n, struct nodo *);
+bool buscar(int, struct nodo *);
 
 int main() {
   int opt, n;
@@ -26,7 +30,8 @@ int main() {
     cout << endl << endl;
     cout << "1. Ingresar un dato" << endl;
     cout << "2. inOrden" << endl;
-    cout << "3. Imprimir raiz" << endl;
+    cout << "3. Eliminar" << endl;
+    cout << "4. Buscar" << endl;
     cin >> opt;
     switch (opt) {
     case 1:
@@ -38,7 +43,17 @@ int main() {
       inOrden(raiz);
       break;
     case 3:
-      cout << raiz->dato << endl;
+      cout << "Ingresa n: ";
+      cin >> n;
+      if (buscar(n, raiz)) {
+        eliminar(n, raiz);
+      }
+      break;
+    case 4:
+      cout << "Ingresa n: ";
+      cin >> n;
+      buscar(n, raiz) ? cout << "Se encontro el dato" << endl
+                      : cout << "El dato NO fue encontrado";
       break;
     }
   }
@@ -88,4 +103,57 @@ void agregarDato(int n, struct nodo *raiz) {
   }
 
   (n > raiz->dato) ? agregarDato(n, raiz->der) : agregarDato(n, raiz->izq);
+}
+
+bool buscar(int n, struct nodo *raiz) {
+  if (raiz == NULL)
+    return false;
+
+  if (n == raiz->dato)
+    return true;
+
+  if (n > raiz->dato)
+    return buscar(n, raiz->der);
+
+  return buscar(n, raiz->izq);
+}
+
+struct nodo *buscarMenor(struct nodo *raiz) {
+  if (raiz->izq == NULL)
+    return raiz;
+  return buscarMenor(raiz->izq);
+}
+
+struct nodo *buscarPadre(struct nodo *raiz, struct nodo *hijo) {
+  if (raiz->der == hijo or raiz->izq == hijo) {
+    return raiz;
+  }
+
+  if (hijo->dato > raiz->dato)
+    return buscarPadre(raiz->der, hijo);
+
+  return buscarPadre(raiz->izq, hijo);
+}
+
+void eliminar(int n, struct nodo *raiz) {
+  if (raiz == NULL) {
+    cout << "No existe el dato" << endl;
+    return;
+  }
+
+  if (n == raiz->dato) {
+    struct nodo *menor = buscarMenor(raiz->der);
+    struct nodo *padre = buscarPadre(raiz, menor);
+    raiz->dato = menor->dato;
+    if (padre->izq == menor)
+      padre->izq = NULL;
+    else
+      padre->der = NULL;
+    return;
+  }
+
+  if (n > raiz->dato)
+    eliminar(n, raiz->der);
+  else
+    eliminar(n, raiz->izq);
 }
