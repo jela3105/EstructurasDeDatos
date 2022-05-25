@@ -6,6 +6,10 @@ void leerArbol(struct nodo *);
 void agregarNodo(int n, struct nodo *raiz);
 void balancearArbol(struct nodo *, int);
 void inOrden(struct nodo *);
+void rotacionDD(struct nodo *);
+void rotacionII(struct nodo *);
+void rotacionDI(struct nodo *);
+void rotacionID(struct nodo *);
 struct nodo *encontrarDesbalanceo(struct nodo *);
 
 struct nodo {
@@ -38,10 +42,11 @@ void leerArbol(struct nodo *raiz) {
     cin >> dato;
     agregarNodo(dato, raiz);
     struct nodo *subArbolDesbalanceado = encontrarDesbalanceo(raiz);
-    if (subArbolDesbalanceado != nullptr)
-      cout << "El que desbalancea es: " << dato;
-    // cout << subArbolDesbalanceado->dato;
-    // balancearArbol(subArbolDesbalanceado, dato);
+    if (subArbolDesbalanceado != nullptr) {
+      cout << "El que desbalancea es: " << dato << ": ";
+      cout << subArbolDesbalanceado->dato << endl;
+      balancearArbol(subArbolDesbalanceado, dato);
+    }
     // imprimirArbol(raiz);
   }
 }
@@ -116,25 +121,30 @@ struct nodo *encontrarDesbalanceo(struct nodo *raiz) {
 void balancearArbol(struct nodo *raiz, int x) {
   // rotacion II
   if (x < raiz->dato and x < raiz->izq->dato) {
-    cout << "se debe hacer rii" << endl;
+    cout << "Se hace RII" << endl;
+    rotacionII(raiz);
     return;
   }
 
   // rotacion DD
   if (x > raiz->dato and x > raiz->der->dato) {
-    cout << "se debe hacer rdd" << endl;
+    cout << "Se hace RDD" << endl;
+    rotacionDD(raiz);
     return;
   }
 
   // rotacion ID
-  if (x < raiz->dato and x > raiz->der->dato) {
-    cout << "se debe hacer rid" << endl;
+  if (x < raiz->dato and x > raiz->izq->dato) {
+    cout << "Se hace RID" << endl;
+    rotacionID(raiz);
     return;
   }
 
   // rotacion DI
-  if (x > raiz->dato and x < raiz->izq->dato) {
-    cout << "se debe hacer rdi" << endl;
+  if (x > raiz->dato and x < raiz->der->dato) {
+    cout << "Se hace RDI" << endl;
+    rotacionDI(raiz);
+    return;
   }
 }
 
@@ -145,3 +155,5 @@ void inOrden(struct nodo *raiz) {
   cout << raiz->dato << " ";
   inOrden(raiz->der);
 }
+
+void rotacionDD(struct nodo *raiz) {}
