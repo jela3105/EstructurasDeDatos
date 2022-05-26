@@ -159,7 +159,6 @@ void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
       struct nodo *padre = buscarPadre(*raizPrincipal, raiz);
       padre->izq = raiz->izq;
     }
-    cout << raiz->dato << endl;
     rotacionII(raiz);
     return;
   }
@@ -222,11 +221,16 @@ void rotacionID(struct nodo *raiz) {
   else
     aux = b->izq;
   b->der = c;
-  if (aux->dato > b->dato) {
-    c->izq = aux;
-    a->der = nullptr;
+  if (aux != nullptr) {
+    if (aux->dato > b->dato) {
+      c->izq = aux;
+      a->der = nullptr;
+    } else {
+      a->der = aux;
+      c->izq = nullptr;
+    }
   } else {
-    a->der = aux;
+    a->der = nullptr;
     c->izq = nullptr;
   }
   b->izq = a;
@@ -250,12 +254,17 @@ void rotacionDI(struct nodo *raiz) {
     aux = b->izq;
   b->der = c;
   b->izq = a;
-  if (b->dato > aux->dato) {
-    a->der = aux;
-    c->izq = nullptr;
+  if (aux != nullptr) {
+    if (b->dato > aux->dato) {
+      a->der = aux;
+      c->izq = nullptr;
+    } else {
+      c->izq = aux;
+      a->der = nullptr;
+    }
   } else {
-    c->izq = aux;
     a->der = nullptr;
+    c->izq = nullptr;
   }
 }
 
