@@ -43,8 +43,9 @@ void leerArbol(struct nodo *raiz) {
     agregarNodo(dato, raiz);
     struct nodo *subArbolDesbalanceado = encontrarDesbalanceo(raiz);
     if (subArbolDesbalanceado != nullptr) {
-      cout << "El que desbalancea es: " << dato << ": ";
-      cout << subArbolDesbalanceado->dato << endl;
+      cout << "El que desbalancea es: " << dato
+           << ", La raiz del sub arbol desbalanceado: "
+           << subArbolDesbalanceado->dato << endl;
       balancearArbol(subArbolDesbalanceado, dato, &raiz);
       cout << raiz->dato << endl;
       inOrden(raiz);
@@ -132,10 +133,8 @@ void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
   // rotacion DD
   if (x > raiz->dato and x > raiz->der->dato) {
     cout << "Se hace RDD" << endl;
-    if (raiz == *raizPrincipal) {
+    if (raiz == *raizPrincipal)
       *raizPrincipal = raiz->der;
-      // cout << **raizPrincipal->dato;
-    }
     rotacionDD(raiz);
     return;
   }
@@ -143,7 +142,9 @@ void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
   // rotacion ID
   if (x < raiz->dato and x > raiz->izq->dato) {
     cout << "Se hace RID" << endl;
-    // rotacionID(raiz);
+    if (raiz == *raizPrincipal)
+      *raizPrincipal = raiz->izq->der;
+    rotacionID(raiz);
     return;
   }
 
@@ -161,6 +162,26 @@ void inOrden(struct nodo *raiz) {
   inOrden(raiz->izq);
   cout << raiz->dato << " ";
   inOrden(raiz->der);
+}
+
+void rotacionID(struct nodo *raiz) {
+  struct nodo *a, *b, *c, *aux;
+  c = raiz;
+  a = raiz->izq;
+  b = raiz->izq->der;
+  if (b->der != nullptr)
+    aux = b->der;
+  else
+    aux = b->izq;
+  b->der = c;
+  if (aux->dato > b->dato) {
+    c->izq = aux;
+    a->der = nullptr;
+  } else {
+    a->der = aux;
+    c->izq = nullptr;
+  }
+  b->izq = a;
 }
 
 void rotacionDD(struct nodo *raiz) {
