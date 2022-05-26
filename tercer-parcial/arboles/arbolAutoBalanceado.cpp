@@ -30,17 +30,15 @@ struct nodo {
 
 int main() {
   struct nodo *raiz = new nodo();
-  int opt, n;
+  int opt;
   while (true) {
     cout << "Ingresa un opcion" << endl;
-    cout << "1. Agregar dato" << endl;
+    cout << "1. Agregar datos" << endl;
     cout << "2. Ver arbol" << endl;
     cin >> opt;
     switch (opt) {
     case 1:
-      cout << "Ingresa el dato :";
-      cin >> n;
-      agregarNodo(n, raiz);
+      leerArbol(raiz);
       break;
     case 2:
       verArbol(raiz, 1);
@@ -53,6 +51,7 @@ int main() {
 
 void leerArbol(struct nodo *raiz) {
   int n, dato;
+  cout << "Ingresa la cantidad de nodos : ";
   cin >> n;
   while (n--) {
     cin >> dato;
@@ -65,7 +64,7 @@ void leerArbol(struct nodo *raiz) {
            << ", La raiz del sub arbol desbalanceado: "
            << subArbolDesbalanceado->dato << endl;
       balancearArbol(subArbolDesbalanceado, dato, &raiz);
-      cout << raiz->dato << endl;
+      // cout << raiz->dato << endl;
       verArbol(raiz, 1);
     }
     // imprimirArbol(raiz);
@@ -139,12 +138,28 @@ struct nodo *encontrarDesbalanceo(struct nodo *raiz) {
   return buscar(nodoDesvalanceado, raiz);
 }
 
+struct nodo *buscarPadre(struct nodo *raiz, struct nodo *hijo) {
+  if (raiz->der == hijo or raiz->izq == hijo) {
+    return raiz;
+  }
+
+  if (hijo->dato > raiz->dato)
+    return buscarPadre(raiz->der, hijo);
+
+  return buscarPadre(raiz->izq, hijo);
+}
+
 void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
   // rotacion II
   if (x < raiz->dato and x < raiz->izq->dato) {
     cout << "Se hace RII" << endl;
     if (raiz == *raizPrincipal)
       *raizPrincipal = raiz->izq;
+    else {
+      struct nodo *padre = buscarPadre(*raizPrincipal, raiz);
+      padre->izq = raiz->izq;
+    }
+    cout << raiz->dato << endl;
     rotacionII(raiz);
     return;
   }
@@ -154,6 +169,10 @@ void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
     cout << "Se hace RDD" << endl;
     if (raiz == *raizPrincipal)
       *raizPrincipal = raiz->der;
+    else {
+      struct nodo *padre = buscarPadre(*raizPrincipal, raiz);
+      padre->der = raiz->der;
+    }
     rotacionDD(raiz);
     return;
   }
@@ -163,6 +182,10 @@ void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
     cout << "Se hace RID" << endl;
     if (raiz == *raizPrincipal)
       *raizPrincipal = raiz->izq->der;
+    else {
+      struct nodo *padre = buscarPadre(*raizPrincipal, raiz);
+      padre->izq = raiz->izq->der;
+    }
     rotacionID(raiz);
     return;
   }
@@ -172,6 +195,10 @@ void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
     cout << "Se hace RDI" << endl;
     if (raiz == *raizPrincipal)
       *raizPrincipal = raiz->der->izq;
+    else {
+      struct nodo *padre = buscarPadre(*raizPrincipal, raiz);
+      padre->izq = raiz->der->izq;
+    }
     rotacionDI(raiz);
     return;
   }
