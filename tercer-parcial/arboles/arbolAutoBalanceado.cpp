@@ -10,6 +10,7 @@ void rotacionDD(struct nodo *);
 void rotacionII(struct nodo *);
 void rotacionDI(struct nodo *);
 void rotacionID(struct nodo *);
+void verArbol(struct nodo *, int);
 struct nodo *encontrarDesbalanceo(struct nodo *);
 
 struct nodo {
@@ -29,9 +30,24 @@ struct nodo {
 
 int main() {
   struct nodo *raiz = new nodo();
-  // leerArbolConsola();
-  leerArbol(raiz);
-  // imprimirArbol();
+  int opt, n;
+  while (true) {
+    cout << "Ingresa un opcion" << endl;
+    cout << "1. Agregar dato" << endl;
+    cout << "2. Ver arbol" << endl;
+    cin >> opt;
+    switch (opt) {
+    case 1:
+      cout << "Ingresa el dato :";
+      cin >> n;
+      agregarNodo(n, raiz);
+      break;
+    case 2:
+      verArbol(raiz, 1);
+      break;
+    }
+  }
+  // leerArbol(raiz);
   return 0;
 }
 
@@ -41,6 +57,8 @@ void leerArbol(struct nodo *raiz) {
   while (n--) {
     cin >> dato;
     agregarNodo(dato, raiz);
+    cout << endl;
+    verArbol(raiz, 1);
     struct nodo *subArbolDesbalanceado = encontrarDesbalanceo(raiz);
     if (subArbolDesbalanceado != nullptr) {
       cout << "El que desbalancea es: " << dato
@@ -48,7 +66,7 @@ void leerArbol(struct nodo *raiz) {
            << subArbolDesbalanceado->dato << endl;
       balancearArbol(subArbolDesbalanceado, dato, &raiz);
       cout << raiz->dato << endl;
-      inOrden(raiz);
+      verArbol(raiz, 1);
     }
     // imprimirArbol(raiz);
   }
@@ -125,8 +143,9 @@ void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
   // rotacion II
   if (x < raiz->dato and x < raiz->izq->dato) {
     cout << "Se hace RII" << endl;
-    // rotacionII(raiz);
-
+    if (raiz == *raizPrincipal)
+      *raizPrincipal = raiz->izq;
+    rotacionII(raiz);
     return;
   }
 
@@ -151,7 +170,9 @@ void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
   // rotacion DI
   if (x > raiz->dato and x < raiz->der->dato) {
     cout << "Se hace RDI" << endl;
-    // rotacionDI(raiz);
+    if (raiz == *raizPrincipal)
+      *raizPrincipal = raiz->der->izq;
+    rotacionDI(raiz);
     return;
   }
 }
@@ -192,4 +213,38 @@ void rotacionDD(struct nodo *raiz) {
   aux = b->izq;
   b->izq = a;
   a->der = aux;
+}
+
+void rotacionDI(struct nodo *raiz) {
+  struct nodo *a = raiz, *c = raiz->der, *b = raiz->der->izq, *aux;
+  if (b->der != nullptr)
+    aux = b->der;
+  else
+    aux = b->izq;
+  b->der = c;
+  b->izq = a;
+  if (b->dato > aux->dato) {
+    a->der = aux;
+    c->izq = nullptr;
+  } else {
+    c->izq = aux;
+    a->der = nullptr;
+  }
+}
+
+void rotacionII(struct nodo *raiz) {
+  struct nodo *c = raiz, *b = raiz->izq, *a = raiz->izq->izq, *aux = b->der;
+  c->izq = aux;
+  b->der = c;
+}
+
+void verArbol(struct nodo *raiz, int nro) {
+  int i;
+  if (raiz == NULL)
+    return;
+  verArbol(raiz->der, nro + 1);
+  for (i = 0; i < nro; i++)
+    cout << " ";
+  cout << raiz->dato << endl;
+  verArbol(raiz->izq, nro + 1);
 }
