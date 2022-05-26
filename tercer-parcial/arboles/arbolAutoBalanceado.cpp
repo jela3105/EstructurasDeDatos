@@ -4,7 +4,7 @@ using namespace std;
 void leerArbolConsola();
 void leerArbol(struct nodo *);
 void agregarNodo(int n, struct nodo *raiz);
-void balancearArbol(struct nodo *, int);
+void balancearArbol(struct nodo *, int, struct nodo **);
 void inOrden(struct nodo *);
 void rotacionDD(struct nodo *);
 void rotacionII(struct nodo *);
@@ -45,7 +45,9 @@ void leerArbol(struct nodo *raiz) {
     if (subArbolDesbalanceado != nullptr) {
       cout << "El que desbalancea es: " << dato << ": ";
       cout << subArbolDesbalanceado->dato << endl;
-      balancearArbol(subArbolDesbalanceado, dato);
+      balancearArbol(subArbolDesbalanceado, dato, &raiz);
+      cout << raiz->dato << endl;
+      inOrden(raiz);
     }
     // imprimirArbol(raiz);
   }
@@ -118,17 +120,22 @@ struct nodo *encontrarDesbalanceo(struct nodo *raiz) {
   return buscar(nodoDesvalanceado, raiz);
 }
 
-void balancearArbol(struct nodo *raiz, int x) {
+void balancearArbol(struct nodo *raiz, int x, struct nodo **raizPrincipal) {
   // rotacion II
   if (x < raiz->dato and x < raiz->izq->dato) {
     cout << "Se hace RII" << endl;
-    rotacionII(raiz);
+    // rotacionII(raiz);
+
     return;
   }
 
   // rotacion DD
   if (x > raiz->dato and x > raiz->der->dato) {
     cout << "Se hace RDD" << endl;
+    if (raiz == *raizPrincipal) {
+      *raizPrincipal = raiz->der;
+      // cout << **raizPrincipal->dato;
+    }
     rotacionDD(raiz);
     return;
   }
@@ -136,14 +143,14 @@ void balancearArbol(struct nodo *raiz, int x) {
   // rotacion ID
   if (x < raiz->dato and x > raiz->izq->dato) {
     cout << "Se hace RID" << endl;
-    rotacionID(raiz);
+    // rotacionID(raiz);
     return;
   }
 
   // rotacion DI
   if (x > raiz->dato and x < raiz->der->dato) {
     cout << "Se hace RDI" << endl;
-    rotacionDI(raiz);
+    // rotacionDI(raiz);
     return;
   }
 }
@@ -156,4 +163,12 @@ void inOrden(struct nodo *raiz) {
   inOrden(raiz->der);
 }
 
-void rotacionDD(struct nodo *raiz) {}
+void rotacionDD(struct nodo *raiz) {
+  struct nodo *a, *b, *c, *aux;
+  a = raiz;
+  b = raiz->der;
+  c = raiz->der->der;
+  aux = b->izq;
+  b->izq = a;
+  a->der = aux;
+}
