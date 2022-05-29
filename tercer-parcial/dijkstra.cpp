@@ -5,21 +5,28 @@
 
 using namespace std;
 
-void readGraph(vector<vector<int>> &, unordered_map<int, char> &);
+void readGraph(vector<vector<int>> &, unordered_map<int, char> &,
+               unordered_map<char, int> &);
 void printAdjacencyMatrix(vector<vector<int>>);
+void djikstra(vector<vector<int>> &, int, int);
 
 int main() {
   int n;
   cin >> n;
-  unordered_map<int, char> vertex_map;
+  unordered_map<int, char> int_to_char;
+  unordered_map<char, int> char_to_int;
   vector<vector<int>> graph(n, vector<int>(n, -1));
-  readGraph(graph, vertex_map);
-  printAdjacencyMatrix(graph);
+  readGraph(graph, int_to_char, char_to_int);
+  char origin, destiny;
+  cin >> origin >> destiny;
+  djikstra(graph, char_to_int[origin], char_to_int[destiny]);
+
   return 0;
 }
 
-void readGraph(vector<vector<int>> &graph, unordered_map<int, char> &v_m) {
-  unordered_map<char, int> vertex_read;
+void readGraph(vector<vector<int>> &graph, unordered_map<int, char> &v_m,
+               unordered_map<char, int> &vertex_read) {
+
   char vertex_origin, vertex_destiny;
   int n, cost, vertex_counter = 0;
   cin >> n;
@@ -51,3 +58,5 @@ void printAdjacencyMatrix(vector<vector<int>> matrix) {
     cout << endl;
   }
 }
+
+void djikstra(vector<vector<int>> graph, int origin, int destiny) {}
