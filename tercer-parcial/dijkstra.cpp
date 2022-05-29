@@ -1,6 +1,7 @@
 #include <iostream>
-#include <set>
+#include <queue>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 using namespace std;
@@ -8,7 +9,8 @@ using namespace std;
 void readGraph(vector<vector<int>> &, unordered_map<int, char> &,
                unordered_map<char, int> &);
 void printAdjacencyMatrix(vector<vector<int>>);
-void djikstra(vector<vector<int>> &, int, int);
+vector<vector<pair<int, int>>> djikstra(vector<vector<int>>);
+vector<vector<char>> getShortestPaths(vector<vector<pair<int, int>>>, int, int);
 
 int main() {
   int n;
@@ -19,7 +21,16 @@ int main() {
   readGraph(graph, int_to_char, char_to_int);
   char origin, destiny;
   cin >> origin >> destiny;
-  djikstra(graph, char_to_int[origin], char_to_int[destiny]);
+  vector<vector<pair<int, int>>> dijkstra_matrix = djikstra(graph);
+  vector<vector<char>> paths =
+      getShortestPaths(dijkstra_matrix, origin, destiny);
+
+  for (auto path : paths) {
+    for (auto number : path) {
+      cout << int_to_char[number] << " ";
+    }
+    cout << destiny << endl;
+  }
 
   return 0;
 }
@@ -59,4 +70,4 @@ void printAdjacencyMatrix(vector<vector<int>> matrix) {
   }
 }
 
-void djikstra(vector<vector<int>> graph, int origin, int destiny) {}
+vector<vector<pair<int, int>>> djikstra(vector<vector<int>> graph) {}
