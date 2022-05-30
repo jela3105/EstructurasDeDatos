@@ -117,10 +117,16 @@ vector<vector<pair<int, int>>> djikstra(vector<vector<int>> graph, int origin,
       if (dm[vertex][p].first == lower_value) {
         pair_compared = dm[vertex][p];
         vertex_compared = vertex;
-        if (p + 1 < graph.size())
-          dm[vertex][p + 1] = pair_compared;
       }
     }
+    for (int i = 0; i <= p; i++) {
+      if (dm[vertex_compared][i].first < pair_compared.first and
+          dm[vertex_compared][i].first != -1) {
+        pair_compared = dm[vertex_compared][i];
+      }
+    }
+    if (p + 1 < graph.size())
+      dm[vertex_compared][p + 1] = pair_compared;
   }
 
   return dm;
@@ -140,7 +146,8 @@ void printDMChar(vector<vector<pair<int, int>>> dm,
   for (int i = 0; i < dm.size(); i++) {
     for (int j = 0; j < dm.size(); j++) {
       cout << "(" << dm[i][j].first << "," << int_to_char[dm[i][j].second]
-           << ")";
+           << ")"
+           << "\t";
     }
     cout << endl;
   }
