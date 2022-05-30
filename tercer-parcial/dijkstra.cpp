@@ -12,7 +12,7 @@ void readGraph(vector<vector<int>> &, unordered_map<int, char> &,
                unordered_map<char, int> &);
 void printAdjacencyMatrix(vector<vector<int>>);
 vector<vector<pair<int, int>>> djikstra(vector<vector<int>>, int, int);
-vector<vector<char>> getShortestPaths(vector<vector<pair<int, int>>>, int, int);
+vector<vector<int>> getShortestPaths(vector<vector<pair<int, int>>>, int);
 void printDMNumbers(vector<vector<pair<int, int>>>);
 void printDMChar(vector<vector<pair<int, int>>>, unordered_map<int, char>);
 
@@ -31,17 +31,19 @@ int main() {
 
   printDMChar(dijkstra_matrix, int_to_char);
 
-  /*
-  vector<vector<char>> paths = getShortestPaths( dijkstra_matrix,
-  char_to_int[origin], char_to_int[destiny]);
+  vector<vector<int>> paths =
+      getShortestPaths(dijkstra_matrix, char_to_int[destiny]);
 
   for (auto path : paths) {
+    set<int> repeted;
     for (auto number : path) {
-      cout << int_to_char[number] << " ";
+      if (repeted.find(number) == repeted.end()) {
+        repeted.insert(number);
+        cout << int_to_char[number] << " ";
+      }
     }
     cout << destiny << endl;
   }
-  */
 
   return 0;
 }
@@ -151,4 +153,50 @@ void printDMChar(vector<vector<pair<int, int>>> dm,
     }
     cout << endl;
   }
+}
+
+vector<vector<int>> getShortestPaths(vector<vector<pair<int, int>>> dm,
+                                     int destiny) {
+  int vertex = destiny;
+  int minimum = INT_MAX;
+  for (int i = 0; i < dm.size(); i++) {
+    if (dm[vertex][i].first < minimum and dm[vertex][i].first != -1) {
+      minimum = dm[vertex][i].first;
+    }
+  }
+
+  set<int> visited;
+  vector<pair<int, int>> paths;
+  for (int i = 0; i < dm.size(); i++) {
+    if (dm[vertex][i].first == minimum and
+        visited.find(dm[vertex][i].second) == visited.end()) {
+      visited.insert(dm[vertex][i].second);
+      paths.push_back(dm[vertex][i]);
+    }
+  }
+
+  vector<vector<int>> results;
+
+  for (auto path : paths) {
+    vector<int> route;
+    pair<int, int> compared = path;
+    int vertex = destiny;
+    while (compared.first != 0) {
+      route.insert(route.begin(), compared.second);
+      minimum = INT_MAX;
+      for (int i = 0; i < dm.size(); i++) {
+        if (dm[vertex][i].first < minimum and dm[vertex][i].first != -1) {
+          minimum = dm[vertex][i].first;
+        }
+      }
+      for (int i = 0; i < dm.size(); i++) {
+        if (dm[vertex][i].first == minimum) {
+          compared = dm[vertex][i];
+          vertex = compared.second;
+        }
+      }
+    }
+    results.push_back(route);
+  }
+  return results;
 }
