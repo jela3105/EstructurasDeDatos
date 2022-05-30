@@ -13,7 +13,8 @@ void readGraph(vector<vector<int>> &, unordered_map<int, char> &,
 void printAdjacencyMatrix(vector<vector<int>>);
 vector<vector<pair<int, int>>> djikstra(vector<vector<int>>, int, int);
 vector<vector<char>> getShortestPaths(vector<vector<pair<int, int>>>, int, int);
-void printDM(vector<vector<pair<int, int>>>);
+void printDMNumbers(vector<vector<pair<int, int>>>);
+void printDMChar(vector<vector<pair<int, int>>>, unordered_map<int, char>);
 
 int main() {
   int n;
@@ -28,7 +29,7 @@ int main() {
   vector<vector<pair<int, int>>> dijkstra_matrix =
       djikstra(graph, char_to_int[origin], char_to_int[destiny]);
 
-  printDM(dijkstra_matrix);
+  printDMChar(dijkstra_matrix, int_to_char);
 
   /*
   vector<vector<char>> paths = getShortestPaths( dijkstra_matrix,
@@ -102,10 +103,12 @@ vector<vector<pair<int, int>>> djikstra(vector<vector<int>> graph, int origin,
     int lower_value = INT_MAX;
     for (int vertex = 0; vertex < graph.size(); vertex++) {
       if (visited.find(vertex) == visited.end()) { // no se ha visitado
-        dm[vertex][p].first =
-            graph[vertex][vertex_compared] + pair_compared.first;
-        dm[vertex][p].second = vertex_compared;
-        if (dm[vertex][p].first < lower_value)
+        if (graph[vertex][vertex_compared] != -1) {
+          dm[vertex][p].first =
+              graph[vertex][vertex_compared] + pair_compared.first;
+          dm[vertex][p].second = vertex_compared;
+        }
+        if (dm[vertex][p].first < lower_value and dm[vertex][p].first != -1)
           lower_value = dm[vertex][p].first;
       }
     }
@@ -123,10 +126,21 @@ vector<vector<pair<int, int>>> djikstra(vector<vector<int>> graph, int origin,
   return dm;
 }
 
-void printDM(vector<vector<pair<int, int>>> dm) {
+void printDMNumbers(vector<vector<pair<int, int>>> dm) {
   for (int i = 0; i < dm.size(); i++) {
     for (int j = 0; j < dm.size(); j++) {
       cout << "(" << dm[i][j].first << "," << dm[i][j].second << ")";
+    }
+    cout << endl;
+  }
+}
+
+void printDMChar(vector<vector<pair<int, int>>> dm,
+                 unordered_map<int, char> int_to_char) {
+  for (int i = 0; i < dm.size(); i++) {
+    for (int j = 0; j < dm.size(); j++) {
+      cout << "(" << dm[i][j].first << "," << int_to_char[dm[i][j].second]
+           << ")";
     }
     cout << endl;
   }
