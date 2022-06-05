@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits.h>
+#include <limits>
 #include <unordered_map>
 #include <vector>
 
@@ -9,7 +10,8 @@ using namespace std;
 void readGraph(vector<vector<int>> &, unordered_map<int, char> &,
                unordered_map<char, int> &);
 
-void printAdjacencyMatrix(vector<vector<int>>);
+void printMatrix(vector<vector<int>>);
+void initializeRoutes(vector<vector<int>> &);
 void floyd(vector<vector<int>> &, vector<vector<int>> &);
 
 int main() {
@@ -20,8 +22,14 @@ int main() {
   vector<vector<int>> graph(n, vector<int>(n, infinite));
   vector<vector<int>> routes(n, vector<int>(n, infinite));
   readGraph(graph, int_to_char, char_to_int);
-  printAdjacencyMatrix(graph);
-  floyd(graph, routes);
+  printMatrix(graph);
+  vector<vector<int>> costs = graph;
+  initializeRoutes(routes);
+  floyd(costs, routes);
+  cout << endl;
+  printMatrix(costs);
+  cout << endl;
+  printMatrix(routes);
 }
 
 void readGraph(vector<vector<int>> &graph, unordered_map<int, char> &v_m,
@@ -56,7 +64,7 @@ void readGraph(vector<vector<int>> &graph, unordered_map<int, char> &v_m,
   }
 }
 
-void printAdjacencyMatrix(vector<vector<int>> matrix) {
+void printMatrix(vector<vector<int>> matrix) {
   for (int i = 0; i < matrix.size(); i++) {
     for (int j = 0; j < matrix[0].size(); j++) {
       matrix[i][j] == infinite ? cout << "i\t" : cout << matrix[i][j] << "\t";
@@ -65,4 +73,34 @@ void printAdjacencyMatrix(vector<vector<int>> matrix) {
   }
 }
 
-void floyd(vector<vector<int>> &graph, vector<vector<int>> &paths) {}
+void initializeRoutes(vector<vector<int>> &routes) {
+  for (int i = 0; i < routes.size(); i++) {
+    for (int j = 0; j < routes.size(); j++) {
+      routes[j][i] = i;
+    }
+  }
+  for (int i = 0; i < routes.size(); i++) {
+    for (int j = 0; j < routes.size(); j++) {
+      if (i == j)
+        routes[i][j] = infinite;
+    }
+  }
+}
+
+void floyd(vector<vector<int>> &costs, vector<vector<int>> &routes) {
+  for (int compared = 0; compared < costs.size(); compared++) {
+    for (int i = 0; i < costs.size(); i++) {
+      if (i == compared)
+        continue;
+      for (int j = 0; j < costs.size(); j++) {
+        if (j == compared)
+          continue;
+        int cost = costs[i][compared] + costs[compared][j];
+        if (cost < costs[i][j]) {
+          costs[i][j] = cost;
+          routes[i][j] = compared;
+        }
+      }
+    }
+  }
+}
